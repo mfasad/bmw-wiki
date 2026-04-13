@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🚗</text></svg>">
+    <title>AK90 BMW EWS: Разблокировка и программирование иммобилайзера — BMW wiki</title>
+    <meta name="description" content="Полный обзор программатора AK90 BMW EWS. Снятие привязки, чтение ключей, работа с модулями EWS3 и EWS4. Инструкции и совместимость.">
+    <link rel="canonical" href="https://bmw-wiki.vercel.app/articles/a/ak/ak90-bmw-ews.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="AK90 BMW EWS: Разблокировка и программирование иммобилайзера">
+    <meta property="og:description" content="Полный обзор программатора AK90 BMW EWS. Снятие привязки, чтение ключей, работа с модулями EWS3 и EWS4. Инструкции и совместимость.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1776070463">
+    <style>
+    .site-footer-premium {
+        margin-top: 60px; padding: 40px 0 0; background: #1e293b; color: #94a3b8;
+    }
+    .footer-grid {
+        display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px;
+        padding-bottom: 32px; border-bottom: 1px solid #334155;
+    }
+    .footer-brand { font-size: 1.2rem; font-weight: 700; color: #f1f5f9; margin-bottom: 12px; }
+    .footer-about { font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px; }
+    .footer-updated { font-size: 0.8rem; color: #64748b; }
+    .footer-col h4 { color: #f1f5f9; font-size: 0.95rem; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 8px; }
+    .footer-col a { color: #94a3b8; font-size: 0.9rem; transition: color 0.2s; }
+    .footer-col a:hover { color: #60a5fa; }
+    .footer-bottom { padding: 20px 0; text-align: center; font-size: 0.85rem; }
+    @media (max-width: 640px) {
+        .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+    .cookie-popup {
+        position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; color: #fff;
+        padding: 16px; transition: transform 0.5s ease; z-index: 9999; border-top: 2px solid #2563eb;
+        transform: translateY(100%);
+    }
+    .cookie-popup.visible { transform: translateY(0); }
+    .cookie-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 0.9rem; }
+    .cookie-btn { background: #2563eb; color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .cookie-btn:hover { background: #1d4ed8; }
+    @media (max-width: 640px) {
+        .cookie-inner { flex-direction: column; text-align: center; }
+    }
+</style>
+    
+    <!--#include virtual="/ssi/head.html" -->
+</head>
+<body>
+        <!--#include virtual="/ssi/body_top.html" -->
+    <style>
+    .nav-dropdown { position: relative; display: inline-block; }
+    .dropdown-toggle {
+        background: none; border: none; cursor: pointer;
+        font: inherit; color: inherit; padding: 8px 12px;
+        border-radius: 8px; transition: background 0.2s;
+    }
+    .dropdown-toggle:hover { background: rgba(0,0,0,0.05); }
+    .dropdown-menu {
+        display: none; position: absolute; right: 0; top: 100%;
+        min-width: 240px; max-height: 70vh; overflow-y: auto;
+        background: var(--card-bg, #fff); border: 1px solid var(--border, #e5e7eb);
+        border-radius: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        padding: 8px 0; z-index: 1000;
+    }
+    .nav-dropdown::after {
+        content: ''; position: absolute; left: 0; right: 0;
+        top: 100%; height: 12px;
+    }
+    .nav-dropdown:hover .dropdown-menu,
+    .nav-dropdown:focus-within .dropdown-menu { display: block; }
+    .dropdown-item {
+        display: block; padding: 10px 20px; color: var(--text, #1f2937);
+        text-decoration: none; font-size: 0.95rem; transition: background 0.15s;
+        white-space: nowrap;
+    }
+    .dropdown-item:hover { background: rgba(37,99,235,0.06); color: var(--primary, #2563eb); }
+    @media (max-width: 768px) {
+        .main-nav > .nav-link { display: none; }
+        .dropdown-toggle { display: none; }
+        .dropdown-menu {
+            display: block !important; position: static;
+            box-shadow: none; border: none; border-radius: 0;
+            min-width: auto; max-height: none; padding: 0;
+            background: transparent;
+        }
+        .dropdown-item {
+            padding: 8px 0; font-size: 1rem;
+        }
+    }
+    </style>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">🚗</span>
+                <span>BMW wiki</span>
+            </a>
+            <button class="mobile-menu-btn" aria-label="Меню" id="menuBtn">☰</button>
+            <nav class="main-nav" id="mainNav">
+                <a href="/category/другое/" class="nav-link">📁 Другое</a>
+<a href="/category/e39/" class="nav-link">📁 E39</a>
+<a href="/category/x5/" class="nav-link">📁 X5</a>
+<a href="/category/e34/" class="nav-link">📁 E34</a>
+<div class="nav-dropdown">
+            <button class="nav-link dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="dropdown-menu"><a href="/category/другое/" class="dropdown-item">📁 Другое</a>
+<a href="/category/e39/" class="dropdown-item">📁 E39</a>
+<a href="/category/x5/" class="dropdown-item">📁 X5</a>
+<a href="/category/e34/" class="dropdown-item">📁 E34</a>
+<a href="/category/e60/" class="dropdown-item">📁 E60</a>
+<a href="/category/x3/" class="dropdown-item">📁 X3</a>
+<a href="/category/m5/" class="dropdown-item">📁 M5</a>
+<a href="/category/f30/" class="dropdown-item">📁 F30</a>
+<a href="/category/e46/" class="dropdown-item">📁 E46</a>
+<a href="/category/f10/" class="dropdown-item">📁 F10</a>
+<a href="/category/3-серия/" class="dropdown-item">📁 3 Серия</a>
+<a href="/category/5-серия/" class="dropdown-item">📁 5 Серия</a>
+<a href="/category/e90/" class="dropdown-item">📁 E90</a>
+<a href="/category/x1/" class="dropdown-item">📁 X1</a>
+<a href="/category/m3/" class="dropdown-item">📁 M3</a>
+<a href="/category/x6/" class="dropdown-item">📁 X6</a>
+<a href="/category/g30/" class="dropdown-item">📁 G30</a>
+<a href="/category/e38/" class="dropdown-item">📁 E38</a>
+<a href="/category/e36/" class="dropdown-item">📁 E36</a>
+<a href="/category/e53/" class="dropdown-item">📁 E53</a>
+<a href="/category/7-серия/" class="dropdown-item">📁 7 Серия</a>
+<a href="/category/e70/" class="dropdown-item">📁 E70</a>
+<a href="/category/e30/" class="dropdown-item">📁 E30</a>
+<a href="/category/g20/" class="dropdown-item">📁 G20</a>
+<a href="/category/1-серия/" class="dropdown-item">📁 1 Серия</a>
+<a href="/category/x7/" class="dropdown-item">📁 X7</a>
+<a href="/category/m8/" class="dropdown-item">📁 M8</a>
+<a href="/category/m4/" class="dropdown-item">📁 M4</a>
+<a href="/category/g05/" class="dropdown-item">📁 G05</a>
+<a href="/category/2-серия/" class="dropdown-item">📁 2 Серия</a>
+<a href="/category/8-серия/" class="dropdown-item">📁 8 Серия</a>
+<a href="/category/e65/" class="dropdown-item">📁 E65</a>
+<a href="/category/6-серия/" class="dropdown-item">📁 6 Серия</a>
+<a href="/category/x4/" class="dropdown-item">📁 X4</a>
+<a href="/category/f15/" class="dropdown-item">📁 F15</a>
+<a href="/category/4-серия/" class="dropdown-item">📁 4 Серия</a>
+<a href="/category/e92/" class="dropdown-item">📁 E92</a>
+<a href="/category/i3/" class="dropdown-item">📁 I3</a>
+<a href="/category/f25/" class="dropdown-item">📁 F25</a>
+<a href="/category/x2/" class="dropdown-item">📁 X2</a>
+<a href="/category/i8/" class="dropdown-item">📁 I8</a>
+<a href="/category/m6/" class="dropdown-item">📁 M6</a>
+<a href="/category/xm/" class="dropdown-item">📁 Xm</a>
+<a href="/category/z4/" class="dropdown-item">📁 Z4</a>
+<a href="/category/e32/" class="dropdown-item">📁 E32</a>
+<a href="/category/e28/" class="dropdown-item">📁 E28</a>
+<a href="/category/m2/" class="dropdown-item">📁 M2</a>
+<a href="/category/e87/" class="dropdown-item">📁 E87</a>
+<a href="/category/z3/" class="dropdown-item">📁 Z3</a>
+<a href="/category/ix/" class="dropdown-item">📁 Ix</a>
+<a href="/category/e21/" class="dropdown-item">📁 E21</a>
+<a href="/category/e83/" class="dropdown-item">📁 E83</a>
+<a href="/category/e63/" class="dropdown-item">📁 E63</a>
+<a href="/category/drugoe/" class="dropdown-item">📁 Другие модели</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="breadcrumbs" aria-label="Навигация">
+        <div class="container"><a href="/">Главная</a><span class="breadcrumb-sep">›</span><a href="/category/другое/">Другое</a><span class="breadcrumb-sep">›</span><span class="breadcrumb-current">AK90 BMW EWS: Разблокировка и программирование иммобилайзера</span></div>
+    </nav>
+
+    <main class="site-main">
+        <div class="container">
+            <div class="article-layout">
+                <article class="article-main">
+                    
+                    <h1>Программатор AK90 BMW EWS: полное руководство по работе</h1>
+                    <nav class="mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#технические-характеристики-и-функционал-ak90">Технические характеристики и функционал AK90</a></li><li><a href="#совместимость-с-поколениями-иммобилайзеров-ews">Совместимость с поколениями иммобилайзеров EWS</a></li><li><a href="#подключение-и-установка-программного-обеспечения">Подключение и установка программного обеспечения</a></li><li><a href="#процедура-чтения-и-записи-данных-ews3">Процедура чтения и записи данных EWS3</a></li><li><a href="#работа-с-ключами-и-клонирование-транспондеров">Работа с ключами и клонирование транспондеров</a></li><li><a href="#диагностика-неисправностей-и-типичные-ошибки">Диагностика неисправностей и типичные ошибки</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></details></nav>
+                    <!--#include virtual="/ssi/article_before.html" -->
+                    <div class="article-body">
+
+<p>В мире профессиональной автомобильной диагностики и чип-тюнинга оборудование для работы с системами безопасности немецкого автопрома занимает особое место. <strong>AK90 BMW EWS</strong> зарекомендовал себя как один из самых доступных и функциональных инструментов для взаимодействия с иммобилайзерами автомобилей BMW, выпущенных в период с 1995 по 2005 год. Этот программатор позволяет специалистам выполнять широкий спектр операций, от простого чтения данных до полной разблокировки модулей управления.</p>
+
+<p>Основная сложность работы с автомобилями <em>BMW</em> того периода заключалась в надежной защите данных, хранящихся в микросхемах EEPROM. Устройство AK90 решает эту проблему, обеспечивая прямую связь с модулем <strong>EWS</strong> (Electronic Warranty System) без необходимости выпаивания чипов в большинстве случаев. Это значительно ускоряет процесс восстановления доступа к автомобилю при утере ключей или выходе из строя штатного оборудования.</p>
+
+<p>В данной статье мы подробно разберем технические возможности прибора, совместимость с различными поколениями иммобилайзеров и нюансы работы с программным обеспечением. Вы узнаете, как правильно подключать устройство, какие модели автомобилей оно поддерживает и какие меры предосторожности необходимо соблюдать для успешного выполнения задач.</p>
+
+<h2 id="технические-характеристики-и-функционал-ak90">Технические характеристики и функционал AK90</h2>
+
+<p>Программатор AK90 представляет собой компактное устройство, предназначенное для работы с микросхемами памяти различных типов. Его архитектура построена вокруг поддержки популярных процессоров Motorola и микросхем EEPROM, которые повсеместно использовались в блоках управления двигателями и модулях иммобилайзеров <em>BMW</em>. Ключевой особенностью является способность считывать и записывать данные в режиме реального времени, что критически важно для клонирования ключей.</p>
+
+<p>Функционал устройства не ограничивается только лишь чтением дампов. Пользователь получает возможность редактировать данные VIN-кода, изменять статус блокировки модуля и даже перепрограммировать чипы ключей. <strong>AK90 BMW EWS</strong> поддерживает работу с различными напряжениями питания, что позволяет безопасно подключаться к чипам разных поколений без риска их повреждения скачками тока.</p>
+
+<blockquote>⚠️ Внимание: При работе с микросхемами памяти крайне важно правильно выставить напряжение питания в программаторе перед подключением. Несоответствие напряжения может привести к необратимому повреждению чипа EEPROM.</blockquote>
+
+<p>Среди основных возможностей прибора стоит выделить поддержку автоматического определения типа микросхемы. Это упрощает работу оператора, так как исключает необходимость ручного поиска модели чипа в базе данных программы каждый раз. Также устройство обеспечивает стабильную связь через USB-интерфейс, минимизируя риск обрыва соединения во время критической операции записи.</p>
+
+<div class="attention-box attention-tip"><span class="attention-icon">💡</span><p>Всегда используйте качественный USB-кабель, идущий в комплекте с устройством. Дешевые аналоги могут вызывать нестабильное питание, что приведет к ошибкам при чтении или записи данных в микросхему.</p></div>
+
+<h2 id="совместимость-с-поколениями-иммобилайзеров-ews">Совместимость с поколениями иммобилайзеров EWS</h2>
+
+<p>Система защиты автомобилей <em>BMW</em> эволюционировала на протяжении многих лет, проходя через несколько версий, известных как EWS1, EWS2, EWS3 и EWS4. Программатор AK90 разработан с учетом специфики каждой из этих систем, однако степень поддержки и методы работы могут существенно различаться. Понимание этих различий является фундаментом для успешной диагностики.</p>
+
+<p>Наиболее广泛о устройство поддерживает работу с модулями <strong>EWS3</strong>, которые устанавливались на популярные модели серии E46, E39 и E53. В этом случае программатор позволяет выполнять чтение данных напрямую через разъем OBD или путем прямого подключения к выводам модуля. Для более старых версий, таких как EWS1 и EWS2, часто требуется прямое подключение к контактам платы модуля.</p>
+
+<p>Ситуация с системой <strong>EWS4</strong>, которая появилась на моделях после 2001-2002 годов (например, E60, E65, E83), требует отдельного внимания. AK90 поддерживает работу с первыми версиями EWS4, но функционал может быть ограничен по сравнению с более дорогими аналогами. В некоторых случаях для работы с EWS4 требуется дополнительное оборудование или специальные адаптеры.</p>
+
+<div class="attention-box attention-info"><div><strong>📊 С каким поколением EWS вам приходится сталкиваться чаще всего?</strong><ul><li>EWS1/EWS2</li><li>EWS3</li><li>EWS4</li><li>Я работаю только с более новыми CAS системами</li></ul></div></div>
+
+<p>Ниже представлена таблица, демонстрирующая уровень поддержки различных типов микросхем и модулей программатором AK90:</p>
+
+<table>
+<thead>
+<tr>
+<th>Тип модуля/Чипа</th>
+<th>Модели BMW</th>
+<th>Метод подключения</th>
+<th>Поддержка функций</th>
+</tr>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EWS2 (DIL8)</td>
+<td>E36, E38, E39 (ранние)</td>
+<td>Прямое (на столе)</td>
+<td>Чтение, Запись, Клонирование</td>
+</tr>
+<tr>
+<td>EWS3 (4D25J)</td>
+<td>E46, E39 (поздние), E53</td>
+<td>OBD-II / Прямое</td>
+<td>Полная поддержка</td>
+</tr>
+<tr>
+<td>EWS4 (MCU)</td>
+<td>E60, E65, E83 (ранние)</td>
+<td>Прямое / OBD</td>
+<td>Ограниченная / Чтение ISN</td>
+</tr>
+<tr>
+<td>MC68HC05</td>
+<td>Различные модули</td>
+<td>Прямое</td>
+<td>Чтение/Запись EEPROM</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="подключение-и-установка-программного-обеспечения">Подключение и установка программного обеспечения</h2>
+
+<p>Начало работы с оборудованием требует правильной установки драйверов и специализированного софта. Программное обеспечение AK90 обычно поставляется на диске или доступно для скачивания с ресурсов производителя. Важно использовать версию прошивки самого устройства, совместимую с установленной версией программы, чтобы избежать конфликтов.</p>
+
+<p>Процесс установки драйверов в операционной системе Windows может потребовать ручного указания пути к INF-файлу, особенно в версиях Windows 10 и 11, где действует строгая проверка подписи драйверов. После успешной установки устройство должно определиться в диспетчере устройств как USB Serial Port. Если система не видит прибор, проверьте качество соединения и целостность USB-кабеля.</p>
+
+<pre><code>1. Подключите AK90 к компьютеру через USB.
+<p>2. Дождитесь обнаружения нового оборудования.</p>
+<p>3. В диспетчере устройств выберите "Обновить драйвер".</p>
+<p>4. Укажите путь к папке Drivers в директории программы.</code></pre></p>
+
+<p>После запуска программы <strong>AK90 BMW EWS</strong> необходимо выбрать правильный тип подключения. В меню конфигурации следует указать порт COM, который был назначен системе при установке драйверов. Ошибка в выборе порта — одна из самых частых причин, по которой программа сообщает об отсутствии связи с устройством.</p>
+
+<div class="checklist-block"><h4>☑️ Проверка перед запуском</h4><label class="check-item"><input type="checkbox"><span>Установлены драйверы FTDI/CH340</span></label><label class="check-item"><input type="checkbox"><span>Выбран правильный COM-порт</span></label><label class="check-item"><input type="checkbox"><span>Версия ПО актуальна</span></label><label class="check-item"><input type="checkbox"><span>Питание модуля стабильно</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="процедура-чтения-и-записи-данных-ews3">Процедура чтения и записи данных EWS3</h2>
+
+<p>Работа с модулем <strong>EWS3</strong> является наиболее распространенным сценарием использования данного программатора. Для успешного выполнения операции необходимо обеспечить стабильное питание модуля. Если вы работаете через разъем OBD, убедитесь, что аккумулятор автомобиля заряжен или подключен стабилизированный источник питания.</p>
+
+<p>В программном интерфейсе необходимо выбрать соответствующую модель процессора, установленного в вашем модуле. Для EWS3 это часто процессор Motorola MC68HC05 или подобные. После выбора типа чипа нажмите кнопку "Read" (Чтение). Процесс может занять от нескольких секунд до минуты, в зависимости от объема памяти и скорости соединения.</p>
+
+<blockquote>⚠️ Внимание: Никогда не прерывайте процесс записи данных в микросхему EEPROM. Отключение питания или разрыв соединения в этот момент приведет к повреждению загрузчика модуля, и автомобиль перестанет заводиться.</blockquote>
+
+<p>После успешного чтения рекомендуется сохранить полученный дамп (файл данных) в надежное место. Это резервная копия, которая может спасти ситуацию в случае ошибки при редактировании. Для записи измененных данных используйте функцию "Write" (Запись), предварительно убедившись, что выбран правильный файл.</p>
+
+<details class="faq-item"><summary>Что делать, если чтение прошло с ошибками?</summary><div class="faq-answer"><p>Если программа сообщает об ошибках контрольных сумм или обрыве связи, попробуйте увеличить время задержки (delay) в настройках программатора. Также проверьте качество контакта щупов с выводами микросхемы — окисление может мешать передаче данных.</p></div></details>
+
+<h2 id="работа-с-ключами-и-клонирование-транспондеров">Работа с ключами и клонирование транспондеров</h2>
+
+<p>Одной из главных задач, которые решает <strong>AK90 BMW EWS</strong>, является создание дубликатов ключей. Устройство позволяет считывать данные с исправного ключа и записывать их на чистый транспондер. Это актуально для ключей с чипами типа 4D, которые широко использовались в автомобилях <em>BMW</em> до внедрения системы CAS.</p>
+
+<p>Процесс клонирования требует наличия специального адаптера для ключей, который подключается к основному блоку программатора. В чистую заготовку ключа записывается идентификатор (ISN), считанный с модуля EWS, и данные самого транспондера. Важно использовать качественные заготовки, так как дешевые аналоги могут иметь дефекты памяти.</p>
+
+<p>При работе с ключами EWS3 необходимо учитывать, что в модуле хранится информация о всех ранее зарегистрированных ключах. Если вы добавляете новый ключ, количество свободных слотов может быть ограничено. В некоторых случаях требуется очистка старых записей, что также можно сделать с помощью функций программатора.</p>
+
+<ul>
+<li>🔑 Поддерживаемые типы чипов: 4D, 4C (в зависимости от версии ПО).</li>
+<li>🔑 Возможность чтения PIN-кода из дампа EWS для изготовления ключей по коду.</li>
+<li>🔑 Функция сброса счетчика попыток запуска двигателя.</li>
+</ul>
+
+<h2 id="диагностика-неисправностей-и-типичные-ошибки">Диагностика неисправностей и типичные ошибки</h2>
+
+<p>В процессе эксплуатации программатора пользователи могут сталкиваться с различными ошибками. Наиболее распространенная из них — "Device Not Found" (Устройство не найдено). Это указывает на проблемы с драйверами, USB-портом или самим кабелем подключения. Решение проблемы обычно лежит в плоскости проверки физического соединения.</p>
+
+<p>Другой частой проблемой является ошибка чтения микросхемы ("Read Error"). Это может быть вызвано плохим контактом щупов, неправильным выбором типа чипа в программе или неисправностью самого модуля EWS. <mark>В некоторых случаях модуль EWS3 мог быть ранее перепрошит или заблокирован, что требует предварительной подготовки перед чтением.</mark></p>
+
+<p>Если устройство нагревается во время работы, это может свидетельствовать о коротком замыкании в цепи подключения или неисправности питания на стороне автомобиля. Необходимо немедленно отключить прибор и проверить цепь мультиметром. Постоянная перегрузка по току может вывести программатор из строя.</p>
+
+<div class="attention-box attention-tip"><span class="attention-icon">💡</span><p>Стабильность напряжения питания — критический фактор успеха. Используйте дополнительный источник питания 12В для модуля EWS, если напряжение в бортовой сети автомобиля ниже 12.5В.</p></div>
+
+<h2 id="faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</h2>
+
+<details>
+<summary>Подойдет ли AK90 для автомобилей BMW с системой CAS?</summary>
+<p>Нет, программатор AK90 предназначен в первую очередь для систем EWS1, EWS2, EWS3 и частично EWS4. Для работы с более новыми системами CAS (Car Access System), которые устанавливались на BMW после 2004-2005 годов (кузова E60, E90, E70 и новее), требуются другие инструменты, такие как AK90+ (с ограничениями), AK90 Pro или более современные решения типа BDM100, Xhorse, Autel.</p>
+</details>
+
+<details>
+<summary>Нужно ли выпаивать чип из модуля EWS для работы?</summary>
+<p>В большинстве случаев выпаивать чип не нужно. Программатор AK90 позволяет подключаться к модулю через разъем OBD (для EWS3) или напрямую к контактам на плате модуля с помощью щупов или клипсы. Выпаивание требуется только в редких случаях, когда контакты на плате повреждены или модуль сильно деформирован.</p>
+</details>
+
+<details>
+<summary>Можно ли с помощью AK90 сделать ключ по VIN-коду?</summary>
+<p>Сам по себе AK90 не генерирует ключи по VIN-коду через интернет-базы данных. Он работает с физическим модулем EWS, установленным в автомобиле. Чтобы сделать ключ, вам нужно считать данные (ISN) из модуля EWS с помощью AK90, а затем использовать эти данные для программирования чипа ключа. Синтез ключей по VIN обычно требует доступа к платным серверам производителей ключей.</p>
+</details>
+
+<details>
+<summary>Работает ли устройство на Windows 10 и 11?</summary>
+<p>Да, AK90 BMW EWS работает на современных операционных системах, включая Windows 10 и 11. Однако могут возникнуть проблемы с установкой драйверов из-за отсутствия цифровой подписи. В таких случаях требуется временно отключить проверку подписи драйверов при загрузке Windows или использовать режим совместимости.</p>
+</details></div>
+                    <!--#include virtual="/ssi/article_after.html" -->
+
+                </article>
+                <aside class="article-sidebar"><!--#include virtual="/ssi/sidebar_top.html" --><nav class="sidebar-search"><div class="sidebar-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск статей..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav><!--#include virtual="/ssi/sidebar_before_toc.html" --><nav class="sidebar-toc" id="sidebarToc"><h3>Содержание</h3><ul><li><a href="#технические-характеристики-и-функционал-ak90">Технические характеристики и функционал AK90</a></li><li><a href="#совместимость-с-поколениями-иммобилайзеров-ews">Совместимость с поколениями иммобилайзеров EWS</a></li><li><a href="#подключение-и-установка-программного-обеспечения">Подключение и установка программного обеспечения</a></li><li><a href="#процедура-чтения-и-записи-данных-ews3">Процедура чтения и записи данных EWS3</a></li><li><a href="#работа-с-ключами-и-клонирование-транспондеров">Работа с ключами и клонирование транспондеров</a></li><li><a href="#диагностика-неисправностей-и-типичные-ошибки">Диагностика неисправностей и типичные ошибки</a></li><li><a href="#faq-часто-задаваемые-вопросы">FAQ: Часто задаваемые вопросы</a></li></ul></nav><!--#include virtual="/ssi/sidebar_before_related.html" --><nav class="sidebar-related"><h3>Похожие статьи</h3><ul><li><a href="/articles/b/bm/bmv-e32-i-e34.html" class="related-card">BMW E32 и E34: История, отличия и выбор легендарной классики</a></li><li><a href="/articles/i/is/ista-bmv-instruktsii.html" class="related-card">Инструкции BMW: руководство по эксплуатации и ремонту</a></li><li><a href="/articles/p/pe/peretyazhka-rulya-bmw.html" class="related-card">Перетяжка руля BMW: цены, материалы и пошаговая инструкция</a></li><li><a href="/articles/c/ch/chernyj-karbon-bmv.html" class="related-card">Черный карбон для BMW: виды пленки, характеристики и установка</a></li><li><a href="/articles/k/ka/kak-zaryadit-bmv-klyuch.html" class="related-card">Как зарядить ключ BMW: способы, ошибки и нюансы</a></li></ul></nav><!--#include virtual="/ssi/sidebar_after_related.html" --></aside>
+            </div>
+        </div>
+    </main>
+
+    <!--#include virtual="/ssi/before_related_bottom.html" -->
+    <section class="related-bottom">
+        <div class="container">
+            <h2 class="related-bottom-heading">📖 Читайте также</h2>
+            <div class="related-bottom-grid"><a href="/articles/b/bm/bmv-e32-i-e34.html" class="related-bottom-card"><span class="related-bottom-title">BMW E32 и E34: История, отличия и выбор легендарной классики</span><span class="related-bottom-desc">Сравнение BMW E32 и E34. Технические характеристики, надежность двигателей, слабые места и особеннос</span></a><a href="/articles/i/is/ista-bmv-instruktsii.html" class="related-bottom-card"><span class="related-bottom-title">Инструкции BMW: руководство по эксплуатации и ремонту</span><span class="related-bottom-desc">Полный справочник: инструкции для BMW всех серий. Скачать мануалы, коды ошибок, графики ТО и советы </span></a><a href="/articles/p/pe/peretyazhka-rulya-bmw.html" class="related-bottom-card"><span class="related-bottom-title">Перетяжка руля BMW: цены, материалы и пошаговая инструкция</span><span class="related-bottom-desc">Полный гид по перетяжке руля BMW. Выбор кожи, алькантары, стоимость работ в Москве, этапы восстановл</span></a><a href="/articles/c/ch/chernyj-karbon-bmv.html" class="related-bottom-card"><span class="related-bottom-title">Черный карбон для BMW: виды пленки, характеристики и установка</span><span class="related-bottom-desc">Полный гид по черному карбону на BMW. Разбор серий пленки, сравнение с реальным углепластиком, нюанс</span></a><a href="/articles/k/ka/kak-zaryadit-bmv-klyuch.html" class="related-bottom-card"><span class="related-bottom-title">Как зарядить ключ BMW: способы, ошибки и нюансы</span><span class="related-bottom-desc">Узнайте, как правильно зарядить ключ BMW, если он сел. Разбор методов зарядки, причин разрядки и сов</span></a><a href="/articles/1/13/134-stil-bmv.html" class="related-bottom-card"><span class="related-bottom-title">134 стиль BMW: Кодировка, функции и отличия от 135 стиля</span><span class="related-bottom-desc">Полный разбор 134 стиля BMW. Какие опции дает кодирование в 134 стиль: скрытые функции, меню, адапта</span></a></div>
+        </div>
+    </section>
+    <!--#include virtual="/ssi/after_related_bottom.html" -->
+
+    <footer class="site-footer-premium">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">🚗 BMW wiki</div>
+                    <p class="footer-about">Гид по обслуживанию, ремонту и тюнингу BMW — от классики до современных моделей.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Разделы</h4>
+                    <ul><li><a href="/category/другое/">📁 Другое</a></li>
+<li><a href="/category/e39/">📁 E39</a></li>
+<li><a href="/category/x5/">📁 X5</a></li>
+<li><a href="/category/e34/">📁 E34</a></li>
+<li><a href="/category/e60/">📁 E60</a></li>
+<li><a href="/category/x3/">📁 X3</a></li></ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Информация</h4>
+                    <ul>
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="/about.html">О проекте</a></li>
+                        <li><a href="/categories.html">Все разделы</a></li>
+                        <li><a href="/contact.html">Контакты</a></li>
+                        <li><a href="/privacy.html">Конфиденциальность</a></li>
+                        <li><a href="/sitemap.xml">Карта сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 BMW wiki. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="cookie-popup">
+        <div class="cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            popup.classList.add('visible');
+            btn.onclick = () => {
+                localStorage.setItem('cookie-accepted', 'true');
+                popup.classList.remove('visible');
+            };
+        }
+    })();
+    </script>
+    <!--#include virtual="/ssi/body_bottom.html" -->
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

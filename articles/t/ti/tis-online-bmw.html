@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🚗</text></svg>">
+    <title>TIS Online BMW: Полный доступ к заводским данным — BMW wiki</title>
+    <meta name="description" content="Как получить доступ к TIS Online для BMW? Разбор функций, поиск по VIN и отличия от ISTA. Инструкция для диагностики и ремонта.">
+    <link rel="canonical" href="https://bmw-wiki.vercel.app/articles/t/ti/tis-online-bmw.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="TIS Online BMW: Полный доступ к заводским данным">
+    <meta property="og:description" content="Как получить доступ к TIS Online для BMW? Разбор функций, поиск по VIN и отличия от ISTA. Инструкция для диагностики и ремонта.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1776070463">
+    <style>
+    .site-footer-premium {
+        margin-top: 60px; padding: 40px 0 0; background: #1e293b; color: #94a3b8;
+    }
+    .footer-grid {
+        display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px;
+        padding-bottom: 32px; border-bottom: 1px solid #334155;
+    }
+    .footer-brand { font-size: 1.2rem; font-weight: 700; color: #f1f5f9; margin-bottom: 12px; }
+    .footer-about { font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px; }
+    .footer-updated { font-size: 0.8rem; color: #64748b; }
+    .footer-col h4 { color: #f1f5f9; font-size: 0.95rem; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 8px; }
+    .footer-col a { color: #94a3b8; font-size: 0.9rem; transition: color 0.2s; }
+    .footer-col a:hover { color: #60a5fa; }
+    .footer-bottom { padding: 20px 0; text-align: center; font-size: 0.85rem; }
+    @media (max-width: 640px) {
+        .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+    .cookie-popup {
+        position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; color: #fff;
+        padding: 16px; transition: transform 0.5s ease; z-index: 9999; border-top: 2px solid #2563eb;
+        transform: translateY(100%);
+    }
+    .cookie-popup.visible { transform: translateY(0); }
+    .cookie-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 0.9rem; }
+    .cookie-btn { background: #2563eb; color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .cookie-btn:hover { background: #1d4ed8; }
+    @media (max-width: 640px) {
+        .cookie-inner { flex-direction: column; text-align: center; }
+    }
+</style>
+    
+    <!--#include virtual="/ssi/head.html" -->
+</head>
+<body>
+        <!--#include virtual="/ssi/body_top.html" -->
+    <style>
+    .nav-dropdown { position: relative; display: inline-block; }
+    .dropdown-toggle {
+        background: none; border: none; cursor: pointer;
+        font: inherit; color: inherit; padding: 8px 12px;
+        border-radius: 8px; transition: background 0.2s;
+    }
+    .dropdown-toggle:hover { background: rgba(0,0,0,0.05); }
+    .dropdown-menu {
+        display: none; position: absolute; right: 0; top: 100%;
+        min-width: 240px; max-height: 70vh; overflow-y: auto;
+        background: var(--card-bg, #fff); border: 1px solid var(--border, #e5e7eb);
+        border-radius: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        padding: 8px 0; z-index: 1000;
+    }
+    .nav-dropdown::after {
+        content: ''; position: absolute; left: 0; right: 0;
+        top: 100%; height: 12px;
+    }
+    .nav-dropdown:hover .dropdown-menu,
+    .nav-dropdown:focus-within .dropdown-menu { display: block; }
+    .dropdown-item {
+        display: block; padding: 10px 20px; color: var(--text, #1f2937);
+        text-decoration: none; font-size: 0.95rem; transition: background 0.15s;
+        white-space: nowrap;
+    }
+    .dropdown-item:hover { background: rgba(37,99,235,0.06); color: var(--primary, #2563eb); }
+    @media (max-width: 768px) {
+        .main-nav > .nav-link { display: none; }
+        .dropdown-toggle { display: none; }
+        .dropdown-menu {
+            display: block !important; position: static;
+            box-shadow: none; border: none; border-radius: 0;
+            min-width: auto; max-height: none; padding: 0;
+            background: transparent;
+        }
+        .dropdown-item {
+            padding: 8px 0; font-size: 1rem;
+        }
+    }
+    </style>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">🚗</span>
+                <span>BMW wiki</span>
+            </a>
+            <button class="mobile-menu-btn" aria-label="Меню" id="menuBtn">☰</button>
+            <nav class="main-nav" id="mainNav">
+                <a href="/category/другое/" class="nav-link">📁 Другое</a>
+<a href="/category/e39/" class="nav-link">📁 E39</a>
+<a href="/category/x5/" class="nav-link">📁 X5</a>
+<a href="/category/e34/" class="nav-link">📁 E34</a>
+<div class="nav-dropdown">
+            <button class="nav-link dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="dropdown-menu"><a href="/category/другое/" class="dropdown-item">📁 Другое</a>
+<a href="/category/e39/" class="dropdown-item">📁 E39</a>
+<a href="/category/x5/" class="dropdown-item">📁 X5</a>
+<a href="/category/e34/" class="dropdown-item">📁 E34</a>
+<a href="/category/e60/" class="dropdown-item">📁 E60</a>
+<a href="/category/x3/" class="dropdown-item">📁 X3</a>
+<a href="/category/m5/" class="dropdown-item">📁 M5</a>
+<a href="/category/f30/" class="dropdown-item">📁 F30</a>
+<a href="/category/e46/" class="dropdown-item">📁 E46</a>
+<a href="/category/f10/" class="dropdown-item">📁 F10</a>
+<a href="/category/3-серия/" class="dropdown-item">📁 3 Серия</a>
+<a href="/category/5-серия/" class="dropdown-item">📁 5 Серия</a>
+<a href="/category/e90/" class="dropdown-item">📁 E90</a>
+<a href="/category/x1/" class="dropdown-item">📁 X1</a>
+<a href="/category/m3/" class="dropdown-item">📁 M3</a>
+<a href="/category/x6/" class="dropdown-item">📁 X6</a>
+<a href="/category/g30/" class="dropdown-item">📁 G30</a>
+<a href="/category/e38/" class="dropdown-item">📁 E38</a>
+<a href="/category/e36/" class="dropdown-item">📁 E36</a>
+<a href="/category/e53/" class="dropdown-item">📁 E53</a>
+<a href="/category/7-серия/" class="dropdown-item">📁 7 Серия</a>
+<a href="/category/e70/" class="dropdown-item">📁 E70</a>
+<a href="/category/e30/" class="dropdown-item">📁 E30</a>
+<a href="/category/g20/" class="dropdown-item">📁 G20</a>
+<a href="/category/1-серия/" class="dropdown-item">📁 1 Серия</a>
+<a href="/category/x7/" class="dropdown-item">📁 X7</a>
+<a href="/category/m8/" class="dropdown-item">📁 M8</a>
+<a href="/category/m4/" class="dropdown-item">📁 M4</a>
+<a href="/category/g05/" class="dropdown-item">📁 G05</a>
+<a href="/category/2-серия/" class="dropdown-item">📁 2 Серия</a>
+<a href="/category/8-серия/" class="dropdown-item">📁 8 Серия</a>
+<a href="/category/e65/" class="dropdown-item">📁 E65</a>
+<a href="/category/6-серия/" class="dropdown-item">📁 6 Серия</a>
+<a href="/category/x4/" class="dropdown-item">📁 X4</a>
+<a href="/category/f15/" class="dropdown-item">📁 F15</a>
+<a href="/category/4-серия/" class="dropdown-item">📁 4 Серия</a>
+<a href="/category/e92/" class="dropdown-item">📁 E92</a>
+<a href="/category/i3/" class="dropdown-item">📁 I3</a>
+<a href="/category/f25/" class="dropdown-item">📁 F25</a>
+<a href="/category/x2/" class="dropdown-item">📁 X2</a>
+<a href="/category/i8/" class="dropdown-item">📁 I8</a>
+<a href="/category/m6/" class="dropdown-item">📁 M6</a>
+<a href="/category/xm/" class="dropdown-item">📁 Xm</a>
+<a href="/category/z4/" class="dropdown-item">📁 Z4</a>
+<a href="/category/e32/" class="dropdown-item">📁 E32</a>
+<a href="/category/e28/" class="dropdown-item">📁 E28</a>
+<a href="/category/m2/" class="dropdown-item">📁 M2</a>
+<a href="/category/e87/" class="dropdown-item">📁 E87</a>
+<a href="/category/z3/" class="dropdown-item">📁 Z3</a>
+<a href="/category/ix/" class="dropdown-item">📁 Ix</a>
+<a href="/category/e21/" class="dropdown-item">📁 E21</a>
+<a href="/category/e83/" class="dropdown-item">📁 E83</a>
+<a href="/category/e63/" class="dropdown-item">📁 E63</a>
+<a href="/category/drugoe/" class="dropdown-item">📁 Другие модели</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="breadcrumbs" aria-label="Навигация">
+        <div class="container"><a href="/">Главная</a><span class="breadcrumb-sep">›</span><a href="/category/другое/">Другое</a><span class="breadcrumb-sep">›</span><span class="breadcrumb-current">TIS Online BMW: Полный доступ к заводским данным</span></div>
+    </nav>
+
+    <main class="site-main">
+        <div class="container">
+            <div class="article-layout">
+                <article class="article-main">
+                    
+                    <h1>TIS Online BMW: Полное руководство по заводскому каталогу</h1>
+                    <nav class="mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#что-такое-tis-и-зачем-он-нужен-владельцу-bmw">Что такое TIS и зачем он нужен владельцу BMW</a></li><li><a href="#отличия-tis-online-от-каталого-realoem">Отличия TIS Online от каталого RealOEM</a></li><li><a href="#поиск-запчастей-и-узлов-по-vin-коду">Поиск запчастей и узлов по VIN-коду</a></li><li><a href="#работа-с-техническими-бюллетенями-и-ремонтом">Работа с техническими бюллетенями и ремонтом</a></li><li><a href="#электрические-схемы-и-диагностика-неисправностей">Электрические схемы и диагностика неисправностей</a></li><li><a href="#программное-обеспечение-и-кодирование">Программное обеспечение и кодирование</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    <!--#include virtual="/ssi/article_before.html" -->
+                    <div class="article-body">
+
+<p>Владельцы автомобилей баварского концерна часто сталкиваются с необходимостью точного подбора запчастей или поиска спецификаций технических жидкостей. Решением этих задач является система <strong>TIS Online</strong> (Technical Information System), которая представляет собой официальную базу знаний BMW Group. В отличие от пиратских каталогов, этот ресурс содержит актуальную информацию, обновляемую непосредственно инженерами завода.</p>
+
+<p>Доступ к системе позволяет избежать дорогостоящих ошибок при заказе деталей, так как <em>RealOEM</em> и другие аналоги могут содержать неточности или не учитывать текущие изменения в конструкции. <mark>Ключевым преимуществом TIS является возможность поиска информации по конкретному VIN-коду автомобиля</mark>, что гарантирует 100% совместимость данных с вашей конкретной модификацией.</p>
+
+<p>Система охватывает все модели, от классических <em>E30</em> до новейших <em>G-серии</em>, предоставляя детальные схемы узлов и агрегатов. Понимание принципов работы этого инструмента необходимо каждому, кто планирует самостоятельное обслуживание или хочет контролировать действия сотрудников сервиса.</p>
+
+<h2 id="что-такое-tis-и-зачем-он-нужен-владельцу-bmw">Что такое TIS и зачем он нужен владельцу BMW</h2>
+<p>Техническая информационная система — это не просто каталог картинок, а сложный программный комплекс, интегрированный с производственными базами данных Мюнхена. Она содержит исчерпывающие сведения о комплектации, включая даты производства, коды опций и спецификации двигателей. Для владельца это означает возможность точно идентифицировать установленные на машине узлы.</p>
+
+<p>Использование <strong>TIS</strong> позволяет получить доступ к заводским bulletin'ам (сервисным бюллетеням), которые описывают известные проблемы и методы их устранения. Часто дилеры скрывают наличие таких программ, предлагая платный ремонт там, где достаточно простой замены по гарантии или бесплатного обновления.</p>
+
+<p>Кроме того, система содержит данные о допусках масел, объемах заправки и моментах затяжки болтов. Это критически важно для тех, кто обслуживает автомобиль самостоятельно. Ошибка в выборе спецификации масла для современных моторов <em>TwinPower Turbo</em> может привести к выходу из строя турбины или катализатора.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Информация в TIS актуальна на момент выпуска бюллетеня. При работе с очень старыми автомобилями всегда перепроверяйте данные с фактическим состоянием узлов, так как предыдущие владельцы могли установить неоригинальные детали.</p>
+</blockquote>
+
+<p>Для полноценного использования функционала часто требуется авторизация. Бесплатный доступ ограничен, однако существуют способы легального получения временных кодов через дилерские центры или специализированные форумы. Профессиональный софт <em>ISTA+</em> (Rheingold) использует те же базы данных, но в оффлайн-режиме, тогда как TIS — это преимущественно онлайн-ресурс.</p>
+
+<h2 id="отличия-tis-online-от-каталого-realoem">Отличия TIS Online от каталого RealOEM</h2>
+<p>Многие путают официальный портал с популярным сайтом RealOEM, однако между ними существуют фундаментальные различия. <strong>RealOEM</strong> — это сторонний проект, который парсит данные из официальных источников, но не является продуктом BMW AG. Он удобен для быстрой проверки номера детали, но не содержит глубокой технической документации.</p>
+
+<p>В то время как RealOEM фокусируется на схемах разборки узлов, <strong>TIS Online</strong> предоставляет доступ к процедурам ремонта, электрическим схемам и планам электрооборудования. Здесь можно найти инструкции по программированию блоков управления и адаптации новых компонентов после замены.</p>
+
+<div class="attention-box attention-info"><div><strong>📊 Какой источник данных вы используете чаще?</strong><ul><li>RealOEM</li><li>TIS Online</li><li>Каталоги запчастей в магазинах</li><li>Спрашиваю у мастера</li></ul></div></div>
+
+<p>Важным аспектом является актуальность данных. В TIS изменения вносятся централизованно. Если BMW выпустила отзывную кампанию по замене топливного фильтра, в TIS эта информация появится мгновенно. Сторонние каталоги могут обновляться с задержкой или не содержать информации о сервисных акциях.</p>
+
+<p>Ниже приведена сравнительная таблица возможностей:</p>
+
+<table>
+<thead>
+<tr>
+<th>Функция</th>
+<th>TIS Online</th>
+<th>RealOEM</th>
+<th>Бумажные мануалы</th>
+</tr>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Поиск по VIN</td>
+<td>Полный</td>
+<td>Полный</td>
+<td>Отсутствует</td>
+</tr>
+<tr>
+<td>Электрические схемы</td>
+<td>Есть (актуальные)</td>
+<td>Нет</td>
+<td>Частично</td>
+</tr>
+<tr>
+<td>Сервисные бюллетени</td>
+<td>Есть</td>
+<td>Нет</td>
+<td>Нет</td>
+</tr>
+<tr>
+<td>Моменты затяжки</td>
+<td>Есть</td>
+<td>Нет</td>
+<td>Есть</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="поиск-запчастей-и-узлов-по-vin-коду">Поиск запчастей и узлов по VIN-коду</h2>
+<p>Основной сценарий использования системы — это поиск конкретного номера детали. Для начала работы необходимо ввести 17-значный <strong>VIN-код</strong> в соответствующее поле на стартовой странице. Система автоматически определит модель, год выпуска и завод-изготовитель.</p>
+
+<p>После ввода кода перед вами откроется иерархическое дерево узлов. Навигация осуществляется от общего к частному: сначала выбирается группа, например "Двигатель", затем подгруппа "Система смазки". Каждая позиция на схеме имеет свой номер, который можно кликнуть для получения детальной информации.</p>
+
+<details class="faq-item"><summary>Как расшифровать зоны на схеме?</summary><div class="faq-answer"><p>На схемах TIS часто используются цифровые указатели. Цифра в кружке означает количество деталей в узле, а стрелка указывает на конкретный элемент. Если рядом с номером стоит знак "+", это означает, что деталь является составной частью более крупного агрегата.</p></div></details>
+
+<p>Особое внимание стоит уделить статусу детали. Система может помечать запчасти как "заменено на", "снято с производства" или "поставляется только в сборе". Это позволяет понять, можно ли купить отдельный сальник или придется менять весь насос в сборе.</p>
+
+<p>При поиске учитывайте, что для некоторых моделей, таких как <em>E46</em> или <em>E39</em>, в течение года выпуска могли меняться поставщики компонентов. Поэтому поиск без VIN-кода может привести к покупке неподходящей детали, даже если модель двигателя совпадает.</p>
+
+<h2 id="работа-с-техническими-бюллетенями-и-ремонтом">Работа с техническими бюллетенями и ремонтом</h2>
+<p>Раздел технических бюллетеней (Service Bulletins) является золотой жилой для диагностов. Здесь описываются типовые неисправности, с которыми столкнулся производитель. Например, могут быть описаны симптомы выхода из строя водяной помпы или особенности замены цепей ГРМ на моторах <em>N47</em>.</p>
+
+<p>Каждый бюллетень содержит четкий алгоритм действий: симптомы, необходимые инструменты, пошаговая инструкция и, самое главное, номера деталей, которые нужно заказать для устранения проблемы. Часто ремонт по бюллетеню проводится бесплатно, если автомобиль находится на гарантии или попадает под программу лояльности.</p>
+
+<div class="checklist-block"><h4>☑️ Проверка перед началом сложного ремонта</h4><label class="check-item"><input type="checkbox"><span>Изучить технический бюллетень по узлу</span></label><label class="check-item"><input type="checkbox"><span>Проверить наличие спец. инструмента</span></label><label class="check-item"><input type="checkbox"><span>Убедиться в актуальности ПО блока управления</span></label><label class="check-item"><input type="checkbox"><span>Заказать оригинальные расходники</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<p>Для доступа к полнотекстовым описаниям процедур часто требуется наличие действующего контракта. Однако, даже имея доступ только к заголовкам, можно понять суть проблемы. Многие независимые СТО используют эти данные для обоснования необходимости ремонта перед клиентом.</p>
+
+<blockquote>
+<p>⚠️ Внимание: При выполнении работ, описанных в бюллетенях, строго следуйте указанной последовательности. Нарушение порядка затяжки болтов ГБЦ или неправильная адаптация дроссельной заслонки могут привести к некорректной работе двигателя.</p>
+</blockquote>
+
+<h2 id="электрические-схемы-и-диагностика-неисправностей">Электрические схемы и диагностика неисправностей</h2>
+<p>Современный автомобиль BMW — это сеть связанных компьютеров. Поиск обрыва или короткого замыкания невозможен без принципиальной электрической схемы. В разделе <strong>Electrical Diagrams</strong> представлены детальные чертежи проводки для каждой опции, установленной на конкретный VIN.</p>
+
+<p>Схемы в TIS отличаются высокой детализацией. Вы можете увидеть не только цвета проводов и сечение, но и расположение разъемов, а также pin-out (распиновку) каждого контакта. Это незаменимый инструмент при установке дополнительного оборудования, такого как сигнализации или мультимедиа.</p>
+
+<p>При работе с электрикой важно обращать внимание на версии блоков управления. Для автомобилей <em>F-серии</em> и новее схемы могут отличаться в зависимости от года выпуска и уровня оснащения (Low/Mid/High). Ошибка в определении версии блока может привести к попытке "прошить" несовместимое ПО.</p>
+
+<div class="attention-box attention-tip"><span class="attention-icon">💡</span><p>При поиске неисправности в электрике всегда смотрите на дату производства автомобиля. Переходные модели могут иметь гибридные жгуты проводки, где часть проводов идет по старой схеме, а часть по новой.</p></div>
+
+<h2 id="программное-обеспечение-и-кодирование">Программное обеспечение и кодирование</h2>
+<p>Хотя TIS — это в первую очередь справочник, он тесно связан с процессами кодирования. В системе можно найти информацию о том, какие функции можно активировать на вашей модели. Например, активация видео в движении или изменение логики работы стеклоочистителей.</p>
+
+<p>Для проведения работ по программированию используется софт <em>ISTA-P</em> или <em>ESYS</em>, но TIS предоставляет теоретическую базу. Здесь описываются требования к напряжению в бортовой сети (необходимость использования стабилизатора) и версиям ПО, которые должны быть установлены предварительно.</p>
+
+<p>Процесс обновления программного обеспечения (Programming) требует стабильного соединения с сервером BMW. Прерывание процесса может привести к "окирпучиванию" блока управления. Поэтому перед началом любых работ с ПО необходимо убедиться в исправности аккумулятора и зарядного устройства.</p>
+
+<p>В разделе кодирования также можно найти списки коов VO (Vehicle Order), которые описывают комплектацию автомобиля. Изменяя эти коды, можно theoretically изменить конфигурацию машины, но делать это следует только при наличии глубоких знаний архитектуры сети <em>CAN</em> и <em>FlexRay</em>.</p>
+
+<div class="attention-box attention-tip"><span class="attention-icon">💡</span><p>Любое вмешательство в программное обеспечение автомобиля вы делаете на свой страх и риск. Всегда имейте возможность отката к заводской версии прошивки.</p></div>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Можно ли получить доступ к TIS бесплатно?</summary>
+<p>Официально доступ к TIS платный и предоставляется авторизованным партнерам. Однако существуют временные демо-доступы или возможность использования через дилерские центры. Полноценный доступ обычно требует покупки лицензии или подписки.</p>
+</details>
+
+<details>
+<summary>В чем разница между TIS и ISTA?</summary>
+<p>TIS (Technical Information System) — это онлайн-каталог и база знаний. ISTA (Integrated Service Technical Application) — это диагностический софт, который устанавливается на компьютер и используется для подключения к автомобилю. ISTA использует базы данных TIS для отображения инструкций по ремонту.</p>
+</details>
+
+<details>
+<summary>Поддерживает ли система старые модели BMW?</summary>
+<p>Да, база данных охватывает практически все модели, начиная с конца 70-х годов. Для очень старых моделей (например, <em>2002</em> или ранние <em>E30</em>) информация может быть менее детализирована, но основные схемы и каталоги запчастей присутствуют.</p>
+</details>
+
+<details>
+<summary>Как найти момент затяжки болтов в TIS?</summary>
+<p>Необходимо перейти в раздел "Repair Instructions" (Инструкции по ремонту), выбрать соответствующий узел (например, "Головка блока цилиндров") и найти процедуру замены или установки. В конце инструкции всегда приводится таблица с моментами затяжки и углами доворота.</p>
+</details></div>
+                    <!--#include virtual="/ssi/article_after.html" -->
+
+                </article>
+                <aside class="article-sidebar"><!--#include virtual="/ssi/sidebar_top.html" --><nav class="sidebar-search"><div class="sidebar-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск статей..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav><!--#include virtual="/ssi/sidebar_before_toc.html" --><nav class="sidebar-toc" id="sidebarToc"><h3>Содержание</h3><ul><li><a href="#что-такое-tis-и-зачем-он-нужен-владельцу-bmw">Что такое TIS и зачем он нужен владельцу BMW</a></li><li><a href="#отличия-tis-online-от-каталого-realoem">Отличия TIS Online от каталого RealOEM</a></li><li><a href="#поиск-запчастей-и-узлов-по-vin-коду">Поиск запчастей и узлов по VIN-коду</a></li><li><a href="#работа-с-техническими-бюллетенями-и-ремонтом">Работа с техническими бюллетенями и ремонтом</a></li><li><a href="#электрические-схемы-и-диагностика-неисправностей">Электрические схемы и диагностика неисправностей</a></li><li><a href="#программное-обеспечение-и-кодирование">Программное обеспечение и кодирование</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav><!--#include virtual="/ssi/sidebar_before_related.html" --><nav class="sidebar-related"><h3>Похожие статьи</h3><ul><li><a href="/articles/k/ka/kak-podklyuchit-blyutuz-v-bmv.html" class="related-card">Как подключить Bluetooth в BMW: пошаговая инструкция</a></li><li><a href="/articles/2/2a/2a64-oshibka-bmw.html" class="related-card">Ошибка 2A64 BMW: причины, симптомы, диагностика и ремонт</a></li><li><a href="/articles/n/no/novyj-logotip-bmw.html" class="related-card">Новый логотип BMW 2026: значение, изменения и реакция публики</a></li><li><a href="/articles/b/bm/bmv-s-devushkoj.html" class="related-card">BMW с девушкой: какие модели идеально подходят для женщин</a></li><li><a href="/articles/b/bm/bmw-r1100gs-otzyvy.html" class="related-card">BMW R1100GS: отзывы владельцев, характеристики и типичные поломки</a></li></ul></nav><!--#include virtual="/ssi/sidebar_after_related.html" --></aside>
+            </div>
+        </div>
+    </main>
+
+    <!--#include virtual="/ssi/before_related_bottom.html" -->
+    <section class="related-bottom">
+        <div class="container">
+            <h2 class="related-bottom-heading">📖 Читайте также</h2>
+            <div class="related-bottom-grid"><a href="/articles/k/ka/kak-podklyuchit-blyutuz-v-bmv.html" class="related-bottom-card"><span class="related-bottom-title">Как подключить Bluetooth в BMW: пошаговая инструкция</span><span class="related-bottom-desc">Узнайте, как настроить Bluetooth в BMW серий E, F и G. Подключение телефона, Hands-Free и передача м</span></a><a href="/articles/2/2a/2a64-oshibka-bmw.html" class="related-bottom-card"><span class="related-bottom-title">Ошибка 2A64 BMW: причины, симптомы, диагностика и ремонт</span><span class="related-bottom-desc">Полный разбор ошибки 2A64 BMW: отключение DME после простоя. Причины, диагностика проводки, замена р</span></a><a href="/articles/n/no/novyj-logotip-bmw.html" class="related-bottom-card"><span class="related-bottom-title">Новый логотип BMW 2026: значение, изменения и реакция публики</span><span class="related-bottom-desc">Разбор обновленного логотипа BMW: почему бренд отказался от 3D-эффекта, что означают цвета и как это</span></a><a href="/articles/b/bm/bmv-s-devushkoj.html" class="related-bottom-card"><span class="related-bottom-title">BMW с девушкой: какие модели идеально подходят для женщин</span><span class="related-bottom-desc">Обзор лучших моделей BMW для женщин. Стиль, безопасность и комфорт: от компактных серий до мощных кр</span></a><a href="/articles/b/bm/bmw-r1100gs-otzyvy.html" class="related-bottom-card"><span class="related-bottom-title">BMW R1100GS: отзывы владельцев, характеристики и типичные поломки</span><span class="related-bottom-desc">Подробный обзор мотоцикла BMW R1100GS. Реальные отзывы владельцев, технические характеристики, расхо</span></a><a href="/articles/z/za/zamena-maslosemnykh-kolpachkov-bmv.html" class="related-bottom-card"><span class="related-bottom-title">Замена маслосъемных колпачков BMW: цены, симптомы, сроки</span><span class="related-bottom-desc">Полный гид по замене маслосъемных колпачков на BMW. Узнайте симптомы износа, стоимость работ, риски </span></a></div>
+        </div>
+    </section>
+    <!--#include virtual="/ssi/after_related_bottom.html" -->
+
+    <footer class="site-footer-premium">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">🚗 BMW wiki</div>
+                    <p class="footer-about">Гид по обслуживанию, ремонту и тюнингу BMW — от классики до современных моделей.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Разделы</h4>
+                    <ul><li><a href="/category/другое/">📁 Другое</a></li>
+<li><a href="/category/e39/">📁 E39</a></li>
+<li><a href="/category/x5/">📁 X5</a></li>
+<li><a href="/category/e34/">📁 E34</a></li>
+<li><a href="/category/e60/">📁 E60</a></li>
+<li><a href="/category/x3/">📁 X3</a></li></ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Информация</h4>
+                    <ul>
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="/about.html">О проекте</a></li>
+                        <li><a href="/categories.html">Все разделы</a></li>
+                        <li><a href="/contact.html">Контакты</a></li>
+                        <li><a href="/privacy.html">Конфиденциальность</a></li>
+                        <li><a href="/sitemap.xml">Карта сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 BMW wiki. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="cookie-popup">
+        <div class="cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            popup.classList.add('visible');
+            btn.onclick = () => {
+                localStorage.setItem('cookie-accepted', 'true');
+                popup.classList.remove('visible');
+            };
+        }
+    })();
+    </script>
+    <!--#include virtual="/ssi/body_bottom.html" -->
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

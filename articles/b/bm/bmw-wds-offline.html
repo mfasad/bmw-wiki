@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🚗</text></svg>">
+    <title>BMW WDS Offline: Установка, настройка и работа со схемами — BMW wiki</title>
+    <meta name="description" content="Полный гид по BMW WDS Offline. Как установить базу данных электрических схем на Windows, настроить виртуальный привод и искать неисправности в проводке BMW.">
+    <link rel="canonical" href="https://bmw-wiki.vercel.app/articles/b/bm/bmw-wds-offline.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="BMW WDS Offline: Установка, настройка и работа со схемами">
+    <meta property="og:description" content="Полный гид по BMW WDS Offline. Как установить базу данных электрических схем на Windows, настроить виртуальный привод и искать неисправности в проводке BMW.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1776070463">
+    <style>
+    .site-footer-premium {
+        margin-top: 60px; padding: 40px 0 0; background: #1e293b; color: #94a3b8;
+    }
+    .footer-grid {
+        display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px;
+        padding-bottom: 32px; border-bottom: 1px solid #334155;
+    }
+    .footer-brand { font-size: 1.2rem; font-weight: 700; color: #f1f5f9; margin-bottom: 12px; }
+    .footer-about { font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px; }
+    .footer-updated { font-size: 0.8rem; color: #64748b; }
+    .footer-col h4 { color: #f1f5f9; font-size: 0.95rem; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 8px; }
+    .footer-col a { color: #94a3b8; font-size: 0.9rem; transition: color 0.2s; }
+    .footer-col a:hover { color: #60a5fa; }
+    .footer-bottom { padding: 20px 0; text-align: center; font-size: 0.85rem; }
+    @media (max-width: 640px) {
+        .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+    .cookie-popup {
+        position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; color: #fff;
+        padding: 16px; transition: transform 0.5s ease; z-index: 9999; border-top: 2px solid #2563eb;
+        transform: translateY(100%);
+    }
+    .cookie-popup.visible { transform: translateY(0); }
+    .cookie-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 0.9rem; }
+    .cookie-btn { background: #2563eb; color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .cookie-btn:hover { background: #1d4ed8; }
+    @media (max-width: 640px) {
+        .cookie-inner { flex-direction: column; text-align: center; }
+    }
+</style>
+    
+    <!--#include virtual="/ssi/head.html" -->
+</head>
+<body>
+        <!--#include virtual="/ssi/body_top.html" -->
+    <style>
+    .nav-dropdown { position: relative; display: inline-block; }
+    .dropdown-toggle {
+        background: none; border: none; cursor: pointer;
+        font: inherit; color: inherit; padding: 8px 12px;
+        border-radius: 8px; transition: background 0.2s;
+    }
+    .dropdown-toggle:hover { background: rgba(0,0,0,0.05); }
+    .dropdown-menu {
+        display: none; position: absolute; right: 0; top: 100%;
+        min-width: 240px; max-height: 70vh; overflow-y: auto;
+        background: var(--card-bg, #fff); border: 1px solid var(--border, #e5e7eb);
+        border-radius: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        padding: 8px 0; z-index: 1000;
+    }
+    .nav-dropdown::after {
+        content: ''; position: absolute; left: 0; right: 0;
+        top: 100%; height: 12px;
+    }
+    .nav-dropdown:hover .dropdown-menu,
+    .nav-dropdown:focus-within .dropdown-menu { display: block; }
+    .dropdown-item {
+        display: block; padding: 10px 20px; color: var(--text, #1f2937);
+        text-decoration: none; font-size: 0.95rem; transition: background 0.15s;
+        white-space: nowrap;
+    }
+    .dropdown-item:hover { background: rgba(37,99,235,0.06); color: var(--primary, #2563eb); }
+    @media (max-width: 768px) {
+        .main-nav > .nav-link { display: none; }
+        .dropdown-toggle { display: none; }
+        .dropdown-menu {
+            display: block !important; position: static;
+            box-shadow: none; border: none; border-radius: 0;
+            min-width: auto; max-height: none; padding: 0;
+            background: transparent;
+        }
+        .dropdown-item {
+            padding: 8px 0; font-size: 1rem;
+        }
+    }
+    </style>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">🚗</span>
+                <span>BMW wiki</span>
+            </a>
+            <button class="mobile-menu-btn" aria-label="Меню" id="menuBtn">☰</button>
+            <nav class="main-nav" id="mainNav">
+                <a href="/category/другое/" class="nav-link">📁 Другое</a>
+<a href="/category/e39/" class="nav-link">📁 E39</a>
+<a href="/category/x5/" class="nav-link">📁 X5</a>
+<a href="/category/e34/" class="nav-link">📁 E34</a>
+<div class="nav-dropdown">
+            <button class="nav-link dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="dropdown-menu"><a href="/category/другое/" class="dropdown-item">📁 Другое</a>
+<a href="/category/e39/" class="dropdown-item">📁 E39</a>
+<a href="/category/x5/" class="dropdown-item">📁 X5</a>
+<a href="/category/e34/" class="dropdown-item">📁 E34</a>
+<a href="/category/e60/" class="dropdown-item">📁 E60</a>
+<a href="/category/x3/" class="dropdown-item">📁 X3</a>
+<a href="/category/m5/" class="dropdown-item">📁 M5</a>
+<a href="/category/f30/" class="dropdown-item">📁 F30</a>
+<a href="/category/e46/" class="dropdown-item">📁 E46</a>
+<a href="/category/f10/" class="dropdown-item">📁 F10</a>
+<a href="/category/3-серия/" class="dropdown-item">📁 3 Серия</a>
+<a href="/category/5-серия/" class="dropdown-item">📁 5 Серия</a>
+<a href="/category/e90/" class="dropdown-item">📁 E90</a>
+<a href="/category/x1/" class="dropdown-item">📁 X1</a>
+<a href="/category/m3/" class="dropdown-item">📁 M3</a>
+<a href="/category/x6/" class="dropdown-item">📁 X6</a>
+<a href="/category/g30/" class="dropdown-item">📁 G30</a>
+<a href="/category/e38/" class="dropdown-item">📁 E38</a>
+<a href="/category/e36/" class="dropdown-item">📁 E36</a>
+<a href="/category/e53/" class="dropdown-item">📁 E53</a>
+<a href="/category/7-серия/" class="dropdown-item">📁 7 Серия</a>
+<a href="/category/e70/" class="dropdown-item">📁 E70</a>
+<a href="/category/e30/" class="dropdown-item">📁 E30</a>
+<a href="/category/g20/" class="dropdown-item">📁 G20</a>
+<a href="/category/1-серия/" class="dropdown-item">📁 1 Серия</a>
+<a href="/category/x7/" class="dropdown-item">📁 X7</a>
+<a href="/category/m8/" class="dropdown-item">📁 M8</a>
+<a href="/category/m4/" class="dropdown-item">📁 M4</a>
+<a href="/category/g05/" class="dropdown-item">📁 G05</a>
+<a href="/category/2-серия/" class="dropdown-item">📁 2 Серия</a>
+<a href="/category/8-серия/" class="dropdown-item">📁 8 Серия</a>
+<a href="/category/e65/" class="dropdown-item">📁 E65</a>
+<a href="/category/6-серия/" class="dropdown-item">📁 6 Серия</a>
+<a href="/category/x4/" class="dropdown-item">📁 X4</a>
+<a href="/category/f15/" class="dropdown-item">📁 F15</a>
+<a href="/category/4-серия/" class="dropdown-item">📁 4 Серия</a>
+<a href="/category/e92/" class="dropdown-item">📁 E92</a>
+<a href="/category/i3/" class="dropdown-item">📁 I3</a>
+<a href="/category/f25/" class="dropdown-item">📁 F25</a>
+<a href="/category/x2/" class="dropdown-item">📁 X2</a>
+<a href="/category/i8/" class="dropdown-item">📁 I8</a>
+<a href="/category/m6/" class="dropdown-item">📁 M6</a>
+<a href="/category/xm/" class="dropdown-item">📁 Xm</a>
+<a href="/category/z4/" class="dropdown-item">📁 Z4</a>
+<a href="/category/e32/" class="dropdown-item">📁 E32</a>
+<a href="/category/e28/" class="dropdown-item">📁 E28</a>
+<a href="/category/m2/" class="dropdown-item">📁 M2</a>
+<a href="/category/e87/" class="dropdown-item">📁 E87</a>
+<a href="/category/z3/" class="dropdown-item">📁 Z3</a>
+<a href="/category/ix/" class="dropdown-item">📁 Ix</a>
+<a href="/category/e21/" class="dropdown-item">📁 E21</a>
+<a href="/category/e83/" class="dropdown-item">📁 E83</a>
+<a href="/category/e63/" class="dropdown-item">📁 E63</a>
+<a href="/category/drugoe/" class="dropdown-item">📁 Другие модели</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="breadcrumbs" aria-label="Навигация">
+        <div class="container"><a href="/">Главная</a><span class="breadcrumb-sep">›</span><a href="/category/другое/">Другое</a><span class="breadcrumb-sep">›</span><span class="breadcrumb-current">BMW WDS Offline: Установка, настройка и работа со схемами</span></div>
+    </nav>
+
+    <main class="site-main">
+        <div class="container">
+            <div class="article-layout">
+                <article class="article-main">
+                    
+                    <h1>BMW WDS Offline: Профессиональная работа с электросхемами без интернета</h1>
+                    <nav class="mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#системные-требования-и-подготовка-окружения">Системные требования и подготовка окружения</a></li><li><a href="#установка-и-активация-базы-данных">Установка и активация базы данных</a></li><li><a href="#навигация-и-поиск-по-vin-коду">Навигация и поиск по VIN-коду</a></li><li><a href="#работа-с-электрическими-схемами-и-компонентами">Работа с электрическими схемами и компонентами</a></li><li><a href="#типичные-ошибки-и-методы-их-устранения">Типичные ошибки и методы их устранения</a></li><li><a href="#сравнение-wds-и-ista-что-выбрать-диагносту">Сравнение WDS и ISTA: что выбрать диагносту</a></li></ul></details></nav>
+                    <!--#include virtual="/ssi/article_before.html" -->
+                    <div class="article-body">
+
+<p>Для профессионального диагноста или владельца <strong>BMW</strong>, самостоятельно обслуживающего свой автомобиль, доступ к точной технической документации является критически важным. Программа <em>BMW WDS</em> (Workshop Data System) представляет собой официальную базу данных, содержащую полные электрические схемы, распиновку разъемов и расположение компонентов. В отличие от онлайн-версий, <strong>BMW WDS Offline</strong> позволяет работать в полевых условиях, где нет доступа к глобальной сети, что часто случается в гаражах или на трассе.</p>
+
+<p>Использование офлайн-версии требует правильной установки и настройки виртуального окружения, так как оригинальный софт зависит от специфических библиотек и структуры файлов. Неправильная конфигурация может привести к ошибкам запуска или некорректному отображению проводки, что недопустимо при поиске сложных неисправностей. В этой статье мы разберем все этапы подготовки рабочего места, от выбора версии операционной системы до тонкостей навигации по архиву схем.</p>
+
+<p>Основная цель использования <em>Workshop Data System</em> в автономном режиме — это получение мгновенного доступа к информации о <strong>VIN-коде</strong> конкретного автомобиля. Система автоматически фильтрует данные, показывая только те опции и комплектации, которые были установлены на заводе. Это исключает путаницу, которая часто возникает при использовании общих мануалов, не привязанных к конкретной сборке машины.</p>
+
+<h2 id="системные-требования-и-подготовка-окружения">Системные требования и подготовка окружения</h2>
+
+<p>Современные версии операционных систем, такие как Windows 10 или 11, могут не поддерживать старые компоненты, необходимые для запуска классического <strong>WDS</strong>. Чаще всего для стабильной работы требуется виртуальная машина с установленной Windows XP SP3 или Windows 7. Это связано с тем, что база данных использует устаревшие библиотеки и методы шифрования, которые не совместимы с новыми ядрами ОС.</p>
+
+<p>Для создания виртуального окружения рекомендуется использовать программы-эмуляторы, такие как <em>VMware Workstation</em> или <em>VirtualBox</em>. Важно выделить достаточное количество оперативной памяти и дискового пространства, так как полные базы данных могут занимать значительный объем. Также необходимо убедиться, что на хост-машине установлены драйверы для USB-адаптеров, если планируется подключение диагностического интерфейса напрямую к виртуальной среде.</p>
+
+<blockquote>⚠️ Внимание: Попытка запустить старые версии WDS напрямую на Windows 10/11 без использования совместимости или виртуальной машины часто приводит к ошибкам DLL и невозможности открыть файлы схем.</blockquote>
+
+<p>Ключевым элементом подготовки является создание полного бэкапа виртуальной машины сразу после успешной установки всех компонентов. Это позволит вам быстро восстановить рабочее состояние в случае сбоя системы или повреждения файлов базы данных. Резервная копия экономит часы, которые пришлось бы потратить на повторную настройку окружения.</p>
+
+<div class="attention-box attention-tip"><span class="attention-icon">💡</span><p>Используйте функцию "Snapshot" в вашей программе виртуализации сразу после чистой установки Windows и всех драйверов, но до установки самого WDS. Это позволит откатиться к чистому состоянию, если установка пройдет неудачно.</p></div>
+
+<h2 id="установка-и-активация-базы-данных">Установка и активация базы данных</h2>
+
+<p>Процесс инсталляции <strong>BMW WDS Offline</strong> начинается с распаковки архива с базой данных на виртуальный диск. Обычно файлы имеют расширение <code>.rar</code> или <code>.iso</code>, и их необходимо поместить в корневую директорию или специально созданную папку с коротким путем, чтобы избежать ошибок чтения длинных имен файлов. После распаковки требуется запустить скрипт установки или регистратор библиотек.</p>
+
+<p>Важным этапом является настройка пути к базе данных внутри самой программы. В меню конфигурации необходимо указать точное расположение файлов <em>data</em>. Если путь указан неверно, программа запустится, но поиск по VIN-коду выдаст ошибку или пустой результат, так как движок не сможет найти соответствия в таблицах.</p>
+
+<ul>
+<li>🔹 Распакуйте архив с базой данных в папку без кириллических символов в названии.</li>
+<li>🔹 Запустите установщик и следуйте инструкциям мастера установки.</li>
+<li>🔹 В настройках укажите путь к каталогу с файлами схем.</li>
+<li>🔹 Проверьте работу поиска, введя тестовый VIN-код.</li>
+</ul>
+
+<p>Активация часто требует наличия специального ключа или патча, который модифицирует исполняемый файл программы. Без этого шага <strong>WDS</strong> может работать в демо-режиме с ограниченным функционалом. После применения патча необходимо перезапустить приложение, чтобы изменения вступили в силу и стали доступны все разделы документации.</p>
+
+<div class="checklist-block"><h4>☑️ Проверка установки WDS</h4><label class="check-item"><input type="checkbox"><span>Файлы распакованы в корень диска C:</span></label><label class="check-item"><input type="checkbox"><span>Путь к базе указан в настройках</span></label><label class="check-item"><input type="checkbox"><span>Запуск программы без ошибок</span></label><label class="check-item"><input type="checkbox"><span>Поиск по VIN выдает результат</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 4</div></div>
+
+<h2 id="навигация-и-поиск-по-vin-коду">Навигация и поиск по VIN-коду</h2>
+
+<p>Интерфейс <em>Workshop Data System</em> может показаться перегруженным новичку, но он построен логично. После запуска программы в главном окне отображается поле для ввода <strong>VIN-кода</strong>. Именно этот 17-значный идентификатор является ключом ко всей информации. Система считывает код и определяет точную модель, год выпуска, тип двигателя и список всех заводских опций.</p>
+
+<p>В левой части экрана отображается дерево компонентов автомобиля. Оно разбито на основные группы: двигатель, трансмиссия, кузов, электрика и так далее. Раскрывая каждую ветку, вы получаете доступ к подробным схемам. При выборе конкретного узла, например, <code>Центральный кузовной модуль</code>, в правой части окна появляется графическое изображение и текстовое описание.</p>
+
+<p>Одной из самых полезных функций является возможность просмотра распиновки разъемов. Кликнув на значок разъема на схеме, вы увидите таблицу с номерами контактов, цветами проводов и назначением каждого пина. Это незаменимый инструмент при прозвонке проводки мультиметром.</p>
+
+<table>
+<thead>
+<tr>
+<th>Раздел меню</th>
+<th>Описание функции</th>
+<th>Пример использования</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search by VIN</td>
+<td>Поиск автомобиля по номеру кузова</td>
+<td>Определение комплектации E90</td>
+</tr>
+<tr>
+<td>Wiring Diagrams</td>
+<td>Просмотр электрических схем</td>
+<td>Поиск обрыва в цепи фар</td>
+</tr>
+<tr>
+<td>Connector Views</td>
+<td>Визуализация разъемов</td>
+<td>Определение пина для датчика</td>
+</tr>
+<tr>
+<td>Component Location</td>
+<td>Расположение деталей в авто</td>
+<td>Поиск предохранителя в багажнике</td>
+</tr>
+</tbody>
+</table>
+
+<p>Для быстрого перехода между связанными компонентами используются гиперссылки внутри схем. Если на чертеже указано, что сигнал идет на другой модуль, клик по обозначению этого модуля мгновенно перенесет вас на соответствующую страницу документации. Такая навигация значительно ускоряет процесс анализа сложных цепей.</p>
+
+<div class="attention-box attention-info"><div><strong>📊 Какой интерфейс WDS вам кажется удобнее?</strong><ul><li>Классический серый (XP)</li><li>Модернизированный темный</li><li>Веб-версия ISTA</li><li>Бумажные мануалы</li></ul></div></div>
+
+<h2 id="работа-с-электрическими-схемами-и-компонентами">Работа с электрическими схемами и компонентами</h2>
+
+<p>Графическое отображение проводки в <strong>BMW WDS Offline</strong> выполнено в виде упрощенных чертежей, где каждый провод имеет свой цветовой код и маркировку сечения. Понимание этих обозначений критически важно. Например, <em>sw/ge</em> означает черно-желтый провод, а цифры рядом указывают на площадь сечения в квадратных миллиметрах.</p>
+
+<p>При анализе цепи обратите внимание на точки заземления и места соединения проводов. Программа четко выделяет разъемы (коннекторы) и указывает их расположение в автомобиле. Часто рядом с разъемом стоит ссылка на фото его внешнего вида, что помогает найти его в реальном автомобиле среди множества других.</p>
+
+<blockquote>⚠️ Внимание: Цвета проводов на схеме могут отличаться от реальных из-за выгорания изоляции или использования производителем аналогов. Всегда проверяйте целостность провода прибором, а не только визуально.</blockquote>
+
+<p>В разделе компонентов можно найти не только электрические параметры, но и моменты затяжки крепежа, типы используемых жидкостей и рекомендации по замене. Это делает <em>WDS</em> универсальным справочником, выходящим за рамки просто электрических схем. Данные берутся непосредственно из заводских спецификаций <strong>BMW</strong>.</p>
+
+<p>Для удобства работы с длинными цепями, например, идущими от аккумулятора через весь автомобиль, используйте функцию масштабирования и панорамирования. Также доступна функция "Trace", которая подсвечивает выбранный провод на всей протяженности схемы, позволяя отследить его путь от источника до потребителя.</p>
+
+<details class="faq-item"><summary>Секретные коды цветов</summary><div class="faq-answer"><p>В WDS используются немецкие сокращения цветов: ws (weiß) - белый, sw (schwarz) - черный, rt (rot) - красный, ge (gelb) - желтый, gr (grün) - зеленый, bl (blau) - синий, br (braun) - коричневый, gr (grau) - серый, vi (violett) - фиолетовый.</p></div></details>
+
+<h2 id="типичные-ошибки-и-методы-их-устранения">Типичные ошибки и методы их устранения</h2>
+
+<p>Одной из самых распространенных проблем при работе с <strong>BMW WDS Offline</strong> является ошибка "Database not found" или отсутствие реакции на ввод VIN-кода. Чаще всего это связано с неправильным путем к файлам базы данных в настройках программы. Проверьте, не изменился ли буквенный индекс виртуального диска после перезагрузки виртуальной машины.</p>
+
+<p>Другая частая проблема — некорректное отображение шрифтов или отсутствие изображений. Это может быть вызвано отсутствием необходимых системных библиотек в гостевой ОС. Установка пакета <em>Visual C++ Redistributable</em> и обновление драйверов видеокарты в виртуальной машине обычно решает проблему.</p>
+
+<ul>
+<li>🔹 Ошибка запуска: проверьте права администратора и совместимость исполняемого файла.</li>
+<li>🔹 Нет картинок: переустановите графические драйверы в виртуальной машине.</li>
+<li>🔹 Не работает поиск: перепроверьте путь к каталогу данных в меню Settings.</li>
+<li>🔹 Вылеты программы: увеличьте объем оперативной памяти, выделенной для VM.</li>
+</ul>
+
+<p>Если программа работает медленно, убедитесь, что виртуальный диск не фрагментирован и на хост-машине достаточно свободных ресурсов. Тяжелые графические схемы требуют хорошей производительности видеоадаптера. Оптимизация настроек виртуализации может значительно ускорить отрисовку страниц.</p>
+
+<div class="attention-box attention-tip"><span class="attention-icon">💡</span><p>90% проблем с запуском WDS решаются проверкой путей к файлам базы данных и установкой недостающих библиотек Visual C++ в виртуальной среде.</p></div>
+
+<h2 id="сравнение-wds-и-ista-что-выбрать-диагносту">Сравнение WDS и ISTA: что выбрать диагносту</h2>
+
+<p>Многие специалисты задаются вопросом: стоит ли переходить на современную систему <em>ISTA</em> (Rheingold) или оставаться на классическом <strong>WDS</strong>. ISTA обладает более современным интерфейсом, поддерживает новые модели и имеет встроенные тестовые планы. Однако она требует значительно более мощного железа и сложна в установке.</p>
+
+<p><em>WDS</em> остается непревзойденным в скорости работы на старых компьютерах и простоте навигации по схемам для автомобилей, выпущенных до 2010-2012 годов. Для старых моделей <strong>BMW</strong> серии E и ранних F база данных WDS часто содержит более детализированные электрические чертежи, чем новые системы, которые ориентированы на автоматическую диагностику.</p>
+
+<p>Выбор инструмента зависит от ваших задач. Если вы занимаетесь ремонтом старой классики или работаете в условиях, где важна скорость доступа к схеме без долгих загрузок, то <strong>BMW WDS Offline</strong> — идеальный выбор. Для работы с новейшими системами и кодирования функций потребуется освоение ISTA.</p>
+
+<p>Профессионалы часто используют связку обеих программ: WDS для быстрого просмотра проводки и ISTA для проведения глубокой диагностики и программирования блоков. Наличие обеих баз данных на одном ноутбуке, даже в разных виртуальных машинах, обеспечивает максимальную гибкость в работе.</p>
+
+<details>
+<summary>Можно ли использовать WDS на планшете с Android?</summary>
+<p>Прямая установка невозможна, так как WDS требует Windows. Однако можно использовать приложения для удаленного рабочего стола (RDP, TeamViewer), подключаясь к компьютеру или серверу, где установлен WDS. Также существуют портированные версии баз данных в виде PDF или специальных Android-приложений, но они лишены интерактивности оригинала.</p>
+</details>
+
+<details>
+<summary>Где взять актуальный VIN-код для проверки?</summary>
+<p>VIN-код указан в свидетельстве о регистрации транспортного средства (СТС), в паспорте транспортного средства (ПТС), а также выбит на кузове автомобиля (обычно под капотом или на стойке кузова). В WDS можно вводить любой корректный VIN от BMW, чтобы посмотреть структуру конкретной машины.</p>
+</details>
+
+<details>
+<summary>Обновляется ли офлайн версия WDS?</summary>
+<p>Официально база WDS больше не обновляется BMW, так как заменена на ISTA. Однако энтузиасты создают патчи и дополнения, которые интегрируют данные о более новых моделях в старый интерфейс. Для работы с авто новее 2013 года рекомендуется использовать ISTA.</p>
+</details></div>
+                    <!--#include virtual="/ssi/article_after.html" -->
+
+                </article>
+                <aside class="article-sidebar"><!--#include virtual="/ssi/sidebar_top.html" --><nav class="sidebar-search"><div class="sidebar-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск статей..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav><!--#include virtual="/ssi/sidebar_before_toc.html" --><nav class="sidebar-toc" id="sidebarToc"><h3>Содержание</h3><ul><li><a href="#системные-требования-и-подготовка-окружения">Системные требования и подготовка окружения</a></li><li><a href="#установка-и-активация-базы-данных">Установка и активация базы данных</a></li><li><a href="#навигация-и-поиск-по-vin-коду">Навигация и поиск по VIN-коду</a></li><li><a href="#работа-с-электрическими-схемами-и-компонентами">Работа с электрическими схемами и компонентами</a></li><li><a href="#типичные-ошибки-и-методы-их-устранения">Типичные ошибки и методы их устранения</a></li><li><a href="#сравнение-wds-и-ista-что-выбрать-диагносту">Сравнение WDS и ISTA: что выбрать диагносту</a></li></ul></nav><!--#include virtual="/ssi/sidebar_before_related.html" --><nav class="sidebar-related"><h3>Похожие статьи</h3><ul><li><a href="/articles/y/ya/ya-budu-v-sinem-bmv-kartinka.html" class="related-card">Я буду в синем БМВ: как сделать фото, найти авто или картинку</a></li><li><a href="/articles/f/fo/fotosessiya-s-bmv-devushka.html" class="related-card">Фотосессия с BMW: Идеи для девушек и выбор модели авто</a></li><li><a href="/articles/b/bm/bmv-e-klass.html" class="related-card">БМВ Е класс: характеристики, история и выбор модели</a></li><li><a href="/articles/0/05/05dm-sistema-parkovki-bmw.html" class="related-card">Система парковки BMW 05DM: ошибки, диагностика и ремонт</a></li><li><a href="/articles/z/za/zamena-vakuumnogo-nasosa-bmw-n20.html" class="related-card">Замена вакуумного насоса BMW N20: симптомы и инструкция</a></li></ul></nav><!--#include virtual="/ssi/sidebar_after_related.html" --></aside>
+            </div>
+        </div>
+    </main>
+
+    <!--#include virtual="/ssi/before_related_bottom.html" -->
+    <section class="related-bottom">
+        <div class="container">
+            <h2 class="related-bottom-heading">📖 Читайте также</h2>
+            <div class="related-bottom-grid"><a href="/articles/y/ya/ya-budu-v-sinem-bmv-kartinka.html" class="related-bottom-card"><span class="related-bottom-title">Я буду в синем БМВ: как сделать фото, найти авто или картинку</span><span class="related-bottom-desc">Ищете запрос я буду в синем бмв картинка? Узнайте, как найти фото, сделать фотомонтаж, выбрать оттен</span></a><a href="/articles/f/fo/fotosessiya-s-bmv-devushka.html" class="related-bottom-card"><span class="related-bottom-title">Фотосессия с BMW: Идеи для девушек и выбор модели авто</span><span class="related-bottom-desc">Готовитесь к фотосессии с BMW? Узнайте, какую модель выбрать (F30, G20, M4), как подобрать образ и п</span></a><a href="/articles/b/bm/bmv-e-klass.html" class="related-bottom-card"><span class="related-bottom-title">БМВ Е класс: характеристики, история и выбор модели</span><span class="related-bottom-desc">Полный обзор автомобилей БМВ Е класса. История создания, технические особенности двигателей, сравнен</span></a><a href="/articles/0/05/05dm-sistema-parkovki-bmw.html" class="related-bottom-card"><span class="related-bottom-title">Система парковки BMW 05DM: ошибки, диагностика и ремонт</span><span class="related-bottom-desc">Полный разбор системы парковки BMW 05DM. Причины неисправностей датчиков PDC, коды ошибок, схемы под</span></a><a href="/articles/z/za/zamena-vakuumnogo-nasosa-bmw-n20.html" class="related-bottom-card"><span class="related-bottom-title">Замена вакуумного насоса BMW N20: симптомы и инструкция</span><span class="related-bottom-desc">Полное руководство по замене вакуумного насоса на двигателях BMW N20. Признаки неисправности, выбор </span></a><a href="/articles/o/ot/otlichie-bmw-3-ot-bmw-5.html" class="related-bottom-card"><span class="related-bottom-title">BMW 3 или 5 серия: полное сравнение, отличия и выбор</span><span class="related-bottom-desc">В чем разница между BMW 3 и 5 серии? Сравнение двигателей, комфорта, цен и поколений. Экспертный ана</span></a></div>
+        </div>
+    </section>
+    <!--#include virtual="/ssi/after_related_bottom.html" -->
+
+    <footer class="site-footer-premium">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">🚗 BMW wiki</div>
+                    <p class="footer-about">Гид по обслуживанию, ремонту и тюнингу BMW — от классики до современных моделей.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Разделы</h4>
+                    <ul><li><a href="/category/другое/">📁 Другое</a></li>
+<li><a href="/category/e39/">📁 E39</a></li>
+<li><a href="/category/x5/">📁 X5</a></li>
+<li><a href="/category/e34/">📁 E34</a></li>
+<li><a href="/category/e60/">📁 E60</a></li>
+<li><a href="/category/x3/">📁 X3</a></li></ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Информация</h4>
+                    <ul>
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="/about.html">О проекте</a></li>
+                        <li><a href="/categories.html">Все разделы</a></li>
+                        <li><a href="/contact.html">Контакты</a></li>
+                        <li><a href="/privacy.html">Конфиденциальность</a></li>
+                        <li><a href="/sitemap.xml">Карта сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 BMW wiki. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="cookie-popup">
+        <div class="cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            popup.classList.add('visible');
+            btn.onclick = () => {
+                localStorage.setItem('cookie-accepted', 'true');
+                popup.classList.remove('visible');
+            };
+        }
+    })();
+    </script>
+    <!--#include virtual="/ssi/body_bottom.html" -->
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>

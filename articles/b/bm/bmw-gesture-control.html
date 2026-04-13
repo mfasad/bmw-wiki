@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🚗</text></svg>">
+    <title>BMW Gesture Control: полное руководство по настройке жестов — BMW wiki</title>
+    <meta name="description" content="Подробный обзор системы управления жестами BMW. Настройка, список команд, troubleshooting и совместимость с iDrive 7 и 8.">
+    <link rel="canonical" href="https://bmw-wiki.vercel.app/articles/b/bm/bmw-gesture-control.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="BMW Gesture Control: полное руководство по настройке жестов">
+    <meta property="og:description" content="Подробный обзор системы управления жестами BMW. Настройка, список команд, troubleshooting и совместимость с iDrive 7 и 8.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1776070463">
+    <style>
+    .site-footer-premium {
+        margin-top: 60px; padding: 40px 0 0; background: #1e293b; color: #94a3b8;
+    }
+    .footer-grid {
+        display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px;
+        padding-bottom: 32px; border-bottom: 1px solid #334155;
+    }
+    .footer-brand { font-size: 1.2rem; font-weight: 700; color: #f1f5f9; margin-bottom: 12px; }
+    .footer-about { font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px; }
+    .footer-updated { font-size: 0.8rem; color: #64748b; }
+    .footer-col h4 { color: #f1f5f9; font-size: 0.95rem; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 8px; }
+    .footer-col a { color: #94a3b8; font-size: 0.9rem; transition: color 0.2s; }
+    .footer-col a:hover { color: #60a5fa; }
+    .footer-bottom { padding: 20px 0; text-align: center; font-size: 0.85rem; }
+    @media (max-width: 640px) {
+        .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+    .cookie-popup {
+        position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; color: #fff;
+        padding: 16px; transition: transform 0.5s ease; z-index: 9999; border-top: 2px solid #2563eb;
+        transform: translateY(100%);
+    }
+    .cookie-popup.visible { transform: translateY(0); }
+    .cookie-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 0.9rem; }
+    .cookie-btn { background: #2563eb; color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .cookie-btn:hover { background: #1d4ed8; }
+    @media (max-width: 640px) {
+        .cookie-inner { flex-direction: column; text-align: center; }
+    }
+</style>
+    
+    <!--#include virtual="/ssi/head.html" -->
+</head>
+<body>
+        <!--#include virtual="/ssi/body_top.html" -->
+    <style>
+    .nav-dropdown { position: relative; display: inline-block; }
+    .dropdown-toggle {
+        background: none; border: none; cursor: pointer;
+        font: inherit; color: inherit; padding: 8px 12px;
+        border-radius: 8px; transition: background 0.2s;
+    }
+    .dropdown-toggle:hover { background: rgba(0,0,0,0.05); }
+    .dropdown-menu {
+        display: none; position: absolute; right: 0; top: 100%;
+        min-width: 240px; max-height: 70vh; overflow-y: auto;
+        background: var(--card-bg, #fff); border: 1px solid var(--border, #e5e7eb);
+        border-radius: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        padding: 8px 0; z-index: 1000;
+    }
+    .nav-dropdown::after {
+        content: ''; position: absolute; left: 0; right: 0;
+        top: 100%; height: 12px;
+    }
+    .nav-dropdown:hover .dropdown-menu,
+    .nav-dropdown:focus-within .dropdown-menu { display: block; }
+    .dropdown-item {
+        display: block; padding: 10px 20px; color: var(--text, #1f2937);
+        text-decoration: none; font-size: 0.95rem; transition: background 0.15s;
+        white-space: nowrap;
+    }
+    .dropdown-item:hover { background: rgba(37,99,235,0.06); color: var(--primary, #2563eb); }
+    @media (max-width: 768px) {
+        .main-nav > .nav-link { display: none; }
+        .dropdown-toggle { display: none; }
+        .dropdown-menu {
+            display: block !important; position: static;
+            box-shadow: none; border: none; border-radius: 0;
+            min-width: auto; max-height: none; padding: 0;
+            background: transparent;
+        }
+        .dropdown-item {
+            padding: 8px 0; font-size: 1rem;
+        }
+    }
+    </style>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">🚗</span>
+                <span>BMW wiki</span>
+            </a>
+            <button class="mobile-menu-btn" aria-label="Меню" id="menuBtn">☰</button>
+            <nav class="main-nav" id="mainNav">
+                <a href="/category/другое/" class="nav-link">📁 Другое</a>
+<a href="/category/e39/" class="nav-link">📁 E39</a>
+<a href="/category/x5/" class="nav-link">📁 X5</a>
+<a href="/category/e34/" class="nav-link">📁 E34</a>
+<div class="nav-dropdown">
+            <button class="nav-link dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="dropdown-menu"><a href="/category/другое/" class="dropdown-item">📁 Другое</a>
+<a href="/category/e39/" class="dropdown-item">📁 E39</a>
+<a href="/category/x5/" class="dropdown-item">📁 X5</a>
+<a href="/category/e34/" class="dropdown-item">📁 E34</a>
+<a href="/category/e60/" class="dropdown-item">📁 E60</a>
+<a href="/category/x3/" class="dropdown-item">📁 X3</a>
+<a href="/category/m5/" class="dropdown-item">📁 M5</a>
+<a href="/category/f30/" class="dropdown-item">📁 F30</a>
+<a href="/category/e46/" class="dropdown-item">📁 E46</a>
+<a href="/category/f10/" class="dropdown-item">📁 F10</a>
+<a href="/category/3-серия/" class="dropdown-item">📁 3 Серия</a>
+<a href="/category/5-серия/" class="dropdown-item">📁 5 Серия</a>
+<a href="/category/e90/" class="dropdown-item">📁 E90</a>
+<a href="/category/x1/" class="dropdown-item">📁 X1</a>
+<a href="/category/m3/" class="dropdown-item">📁 M3</a>
+<a href="/category/x6/" class="dropdown-item">📁 X6</a>
+<a href="/category/g30/" class="dropdown-item">📁 G30</a>
+<a href="/category/e38/" class="dropdown-item">📁 E38</a>
+<a href="/category/e36/" class="dropdown-item">📁 E36</a>
+<a href="/category/e53/" class="dropdown-item">📁 E53</a>
+<a href="/category/7-серия/" class="dropdown-item">📁 7 Серия</a>
+<a href="/category/e70/" class="dropdown-item">📁 E70</a>
+<a href="/category/e30/" class="dropdown-item">📁 E30</a>
+<a href="/category/g20/" class="dropdown-item">📁 G20</a>
+<a href="/category/1-серия/" class="dropdown-item">📁 1 Серия</a>
+<a href="/category/x7/" class="dropdown-item">📁 X7</a>
+<a href="/category/m8/" class="dropdown-item">📁 M8</a>
+<a href="/category/m4/" class="dropdown-item">📁 M4</a>
+<a href="/category/g05/" class="dropdown-item">📁 G05</a>
+<a href="/category/2-серия/" class="dropdown-item">📁 2 Серия</a>
+<a href="/category/8-серия/" class="dropdown-item">📁 8 Серия</a>
+<a href="/category/e65/" class="dropdown-item">📁 E65</a>
+<a href="/category/6-серия/" class="dropdown-item">📁 6 Серия</a>
+<a href="/category/x4/" class="dropdown-item">📁 X4</a>
+<a href="/category/f15/" class="dropdown-item">📁 F15</a>
+<a href="/category/4-серия/" class="dropdown-item">📁 4 Серия</a>
+<a href="/category/e92/" class="dropdown-item">📁 E92</a>
+<a href="/category/i3/" class="dropdown-item">📁 I3</a>
+<a href="/category/f25/" class="dropdown-item">📁 F25</a>
+<a href="/category/x2/" class="dropdown-item">📁 X2</a>
+<a href="/category/i8/" class="dropdown-item">📁 I8</a>
+<a href="/category/m6/" class="dropdown-item">📁 M6</a>
+<a href="/category/xm/" class="dropdown-item">📁 Xm</a>
+<a href="/category/z4/" class="dropdown-item">📁 Z4</a>
+<a href="/category/e32/" class="dropdown-item">📁 E32</a>
+<a href="/category/e28/" class="dropdown-item">📁 E28</a>
+<a href="/category/m2/" class="dropdown-item">📁 M2</a>
+<a href="/category/e87/" class="dropdown-item">📁 E87</a>
+<a href="/category/z3/" class="dropdown-item">📁 Z3</a>
+<a href="/category/ix/" class="dropdown-item">📁 Ix</a>
+<a href="/category/e21/" class="dropdown-item">📁 E21</a>
+<a href="/category/e83/" class="dropdown-item">📁 E83</a>
+<a href="/category/e63/" class="dropdown-item">📁 E63</a>
+<a href="/category/drugoe/" class="dropdown-item">📁 Другие модели</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="breadcrumbs" aria-label="Навигация">
+        <div class="container"><a href="/">Главная</a><span class="breadcrumb-sep">›</span><a href="/category/другое/">Другое</a><span class="breadcrumb-sep">›</span><span class="breadcrumb-current">BMW Gesture Control: полное руководство по настройке жестов</span></div>
+    </nav>
+
+    <main class="site-main">
+        <div class="container">
+            <div class="article-layout">
+                <article class="article-main">
+                    
+                    <h1>BMW Gesture Control: Полное руководство по управлению жестами</h1>
+                    <nav class="mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#принцип-работы-и-зона-распознавания">Принцип работы и зона распознавания</a></li><li><a href="#активация-и-базовая-настройка-в-меню-idrive">Активация и базовая настройка в меню iDrive</a></li><li><a href="#полный-список-поддерживаемых-жестов">Полный список поддерживаемых жестов</a></li><li><a href="#совместимость-с-моделями-и-версиями-idrive">Совместимость с моделями и версиями iDrive</a></li><li><a href="#персонализация-и-создание-своих-команд">Персонализация и создание своих команд</a></li><li><a href="#типичные-проблемы-и-troubleshooting">Типичные проблемы и troubleshooting</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></details></nav>
+                    <!--#include virtual="/ssi/article_before.html" -->
+                    <div class="article-body">
+
+<p>Технологии в современных автомобилях развиваются с невероятной скоростью, превращая салон в настоящий цифровой кокпит, где водитель управляет мультимедиа одним взмахом руки. Система <strong>BMW Gesture Control</strong> стала революционным шагом в эволюции интерфейса iDrive, позволяя выполнять ключевые функции без касания экрана или кнопок. Это не просто маркетинговая уловка, а продуманный инструмент безопасности, который минимизирует отвлечение внимания от дороги во время движения.</p>
+
+<p>Суть технологии заключается в использовании инфракрасных датчиков, расположенных в потолочной консоли над зеркалом заднего вида. Эти сенсоры сканируют пространство в верхней части центральной консоли, распознавая характерные движения правой руки водителя. <em>Система BMW</em> обучена понимать конкретные паттерны движений, игнорируя случайные взмахи или разговоры руками, что делает её использование интуитивно понятным и безопасным.</p>
+
+<p>В этом материале мы детально разберем, как активировать и настроить управление жестами, рассмотрим полный список поддерживаемых команд для различных версий iDrive. Также вы узнаете о тонкостях работы системы в разных моделях, от классических седанов 5 серии до новейших электрических <em>iX</em> и <em>i7</em>.</p>
+
+<h2 id="принцип-работы-и-зона-распознавания">Принцип работы и зона распознавания</h2>
+
+<p>Фундаментом работы <strong>Gesture Control</strong> является высокоточная 3D-камера с инфракрасным излучением. Она создает невидимое поле в области между водителем и центральным дисплеем. Когда вы совершаете движение, камера фиксирует изменение положения руки в трехмерном пространстве и сопоставляет его с заложенными в память алгоритмами.</p>
+
+<p>Важно понимать, что зона чувствительности ограничена. <mark>Оптимальная зона для распознавания находится на уровне верхней части торпедо, примерно в 10-20 сантиметрах перед дисплеем мультимедиа.</mark> Если держать руку слишком низко, у колен, или слишком высоко, у самого потолка, система может проигнорировать команду. Это сделано специально, чтобы исключить ложные срабатывания от обычной жестикуляции.</p>
+
+<p>Технология работает независимо от освещения в салоне, так как использует ИК-спектр. Однако существуют физические ограничения: наличие объемных предметов между рукой и датчиком, а также слишком яркое прямое солнце, попадающее на датчик, могут временно снизить эффективность работы. В таких случаях система может потребовать более четкого и выраженного движения.</p>
+
+<div class="attention-box attention-tip"><span class="attention-icon">💡</span><p>Для наилучшего отклика держите ладонь расслабленной, но пальцы слегка сомкнутыми — так датчику проще определить контур руки.</p></div>
+
+<h2 id="активация-и-базовая-настройка-в-меню-idrive">Активация и базовая настройка в меню iDrive</h2>
+
+<p>Прежде чем начать пользоваться жестами, необходимо убедиться, что функция активирована в настройках автомобиля. По умолчанию она может быть включена, но часто водители отключают её случайно или хотят перенастроить действия под свои привычки. Для входа в меню настроек используйте контроллер iDrive или голосовые команды.</p>
+
+<p>Процесс настройки выглядит следующим образом:</p>
+<ul>
+    <li>🖐️ Перейдите в главное меню и выберите раздел <code>Настройки</code>.</li>
+    <li>⚙️ Найдите подраздел <code>Система</code> или <code>Общие настройки</code> (зависит от версии iDrive).</li>
+    <li>👆 Выберите пункт <code>Управление жестами</code> (Gesture Control).</li>
+    <li>✅ Убедитесь, что переключатель <strong>Активировано</strong> находится в положении ON.</li>
+</ul>
+
+<p>В этом же меню можно настроить чувствительность или отключить вибрационный отклик (Haptic Feedback), который проявляется в виде легкого звука или визуального подтверждения на экране. Некоторые водители предпочитают отключать звуковое подтверждение, чтобы не создавать лишнего шума в салоне при частом использовании функций.</p>
+
+<div class="checklist-block"><h4>☑️ Проверка готовности системы</h4><label class="check-item"><input type="checkbox"><span>Функция активирована в меню:Автомобиль находится в движении или запущен двигатель:Зона перед экраном свободна от предметов:Рука находится в правильной зоне сканирования</span></label><div class="check-progress">Выполнено: <span class="check-count">0</span> / 1</div></div>
+
+<h2 id="полный-список-поддерживаемых-жестов">Полный список поддерживаемых жестов</h2>
+
+<p>Библиотека жестов постоянно расширяется с обновлением программного обеспечения. Базовый набор команд остается неизменным уже несколько лет, обеспечивая управление самыми востребованными функциями. Ниже приведена таблица основных действий и соответствующих им движений.</p>
+
+<table>
+<thead>
+<tr>
+<th>Действие</th>
+<th>Описание жеста</th>
+<th>Результат</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ответить на звонок</td>
+<td>Указательный палец у уха (как будто держите телефон)</td>
+<td>Принятие входящего вызова</td>
+</tr>
+<tr>
+<td>Отклонить звонок</td>
+<td>Машущее движение кистью (от себя)</td>
+<td>Сброс входящего вызова</td>
+</tr>
+<tr>
+<td>Увеличить громкость</td>
+<td>Вращение указательным пальцем по часовой стрелке</td>
+<td>Повышение уровня звука</td>
+</tr>
+<tr>
+<td>Уменьшить громкость</td>
+<td>Вращение указательным пальцем против часовой стрелки</td>
+<td>Понижение уровня звука</td>
+</tr>
+<tr>
+<td>Активировать 3D-вид</td>
+<td>Указание двумя пальцами на экран</td>
+<td>Переключение вида камеры на 3D (если доступно)</td>
+</tr>
+</tbody>
+</table>
+
+<p>Стоит отметить, что в новых версиях <em>iDrive 8</em> и <em>iDrive 9</em>, устанавливаемых на кузова <em>G20</em>, <em>G30</em> и новее, добавились персонализированные жесты. Вы можете назначить определенное движение (например, "большой палец вверх" или "крестик") на запуск конкретного приложения или изменение профиля водителя.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Жест "указательный палец у уха" должен быть выполнен четко. Если просто поднести руку к голове без характерной позы "телефонной трубки", система может не среагировать или воспринять это как случайное движение.</p>
+</blockquote>
+
+<div class="attention-box attention-info"><div><strong>📊 Как часто вы используете жесты в BMW?</strong><ul><li>Постоянно, очень удобно:Только для громкости:Редко, предпочитаю кнопки:Вообще не пользуюсь</li></ul></div></div>
+
+<h2 id="совместимость-с-моделями-и-версиями-idrive">Совместимость с моделями и версиями iDrive</h2>
+
+<p>Функция <strong>BMW Gesture Control</strong> появилась не во всех автомобилях одновременно и зависит от года выпуска и комплектации. Изначально технология дебютировала в 7-й серии (кузов <em>G11</em>) и 5-й серии (<em>G30</em>) с операционной системой iDrive 6.0. Позже она стала доступна для 3-й серии, X3, X5 и других моделей.</p>
+
+<p>Владельцам более старых автомобилей, таких как <em>F30</em>, <em>F10</em> или <em>E90</em>, эта функция недоступна даже программно, так как требуется наличие специфического ИК-датчика в потолочной консоли, который не устанавливался в эти кузова штатно. Для моделей с iDrive 7.0 (кузова <em>G05</em>, <em>G29</em>) функционал был расширен, а интерфейс стал более отзывчивым.</p>
+
+<p>В最新的 моделях с изогнутым дисплеем (Curved Display) и iDrive 8.5/9.0, таких как новый <em>BMW X1</em> или рестайлинговый <em>BMW 3 Series</em>, система использует более продвинутые алгоритмы машинного обучения. Это позволяет распознавать более сложные комбинации и даже предугадывать намерения водителя на основе контекста (например, при входящем звонке система "ждет" жеста ответа).</p>
+
+<details class="faq-item"><summary>Можно ли установить Gesture Control на старые BMW?</summary><div class="faq-answer"><p>Теоретически установка возможна, но требует замены потолочной панели, датчика, проводки и глубокой программной активации (FSC коды). Стоимость такой доработки часто превышает целесообразность, а стабильность работы не гарантируется.</p></div></details>
+
+<h2 id="персонализация-и-создание-своих-команд">Персонализация и создание своих команд</h2>
+
+<p>Одной из самых сильных сторон современной системы является возможность адаптации под пользователя. Вы не обязаны мириться со стандартным набором, если он вам неудобен. В меню настроек жестов можно переназначить действия для стандартных движений или создать новые.</p>
+
+<p>Процесс создания пользовательского жеста выглядит так:</p>
+<ul>
+    <li>📱 Откройте меню <code>Настройки жестов</code> на дисплее.</li>
+    <li>➕ Нажмите <code>Добавить новый жест</code>.</li>
+    <li>✋ Выберите действие из списка (например, "Открыть навигацию" или "Включить подогрев сидений").</li>
+    <li>🎥 Система попросит вас продемонстрировать движение несколько раз для обучения.</li>
+</ul>
+
+<p>Это особенно полезно для часто используемых функций, до которых долго тянуться через меню. Например, можно настроить включение <strong>режима Sport</strong> или активацию <em>Head-Up Display</em> одним движением. Однако стоит помнить, что сложные составные жесты система может распознавать хуже, чем простые и резкие движения.</p>
+
+<div class="attention-box attention-tip"><span class="attention-icon">💡</span><p>Персонализация жестов позволяет сократить путь к часто используемым функциям, но для безопасности лучше не назначать на них критически важные настройки, требующие визуального контроля.</p></div>
+
+<h2 id="типичные-проблемы-и-troubleshooting">Типичные проблемы и troubleshooting</h2>
+
+<p>Несмотря на высокую надежность, пользователи могут сталкиваться с ситуациями, когда система перестает реагировать. Чаще всего это связано не с поломкой, а с внешними факторами или программными сбоями. Если жесты не работают, в первую очередь проверьте чистоту зоны датчика на потолке.</p>
+
+<p>Пыль, наклейки от камер радар-контроля или даже плотная тонировка лобового стекла (если датчик смотрит сквозь него, хотя обычно он направлен вниз) могут мешать работе ИК-излучения. Также проблемы могут возникать при использовании определенных типов солнцезащитных очков с плотным покрытием, блокирующим ИК-спектр, хотя это случается редко.</p>
+
+<p>Если визуальных препятствий нет, попробуйте выполнить программный сброс мультимедийной системы. Для этого зажмите кнопку включения громкости на центральной консоли и держите её около 30 секунд до перезагрузки экрана. После включения проверьте работу жестов снова.</p>
+
+<blockquote>
+<p>⚠️ Внимание: Если после перезагрузки система по-прежнему не видит руку, а в меню настроек пункт "Управление жестами" отображается серым цветом или отсутствует, возможно, вышел из строя сам датчик или нарушен контакт шлейфа. Требуется диагностика у официального дилера.</p>
+</blockquote>
+
+<h2 id="часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</h2>
+
+<details>
+<summary>Работает ли Gesture Control, если на руке перчатки?</summary>
+<p>Да, система использует инфракрасное излучение, которое проходит сквозь большинство тканей. Тонкие летние перчатки или перчатки из натуральной кожи обычно не создают помех. Однако толстые зимние варежки или перчатки с металлическим напылением могут экранировать сигнал, и тогда система не распознает движение.</p>
+</details>
+
+<details>
+<summary>Можно ли отключить звук подтверждения жестов?</summary>
+<p>Да, звуковое сопровождение (щелчок или гудок) можно отключить. Для этого перейдите в <code>Настройки</code> -> <code>Звук</code> -> <code>Системные звуки</code> и найдите опцию, связанную с подтверждением действий интерфейса или конкретно жестов. В некоторых версиях iDrive это отдельный переключатель в меню самих жестов.</p>
+</details>
+
+<details>
+<summary>Почему система реагирует на движения пассажира?</summary>
+<p>Иногда датчик может считывать движения правого пассажира, если они попадают в зону сканирования. Чтобы минимизировать это, система настроена на приоритет движений, исходящих со стороны водителя. Если проблема возникает часто, можно временно deactivate функцию через быстрое меню или голосовую команду "Отключить управление жестами".</p>
+</details>
+
+<details>
+<summary>Доступна ли функция в BMW X1 и X2?</summary>
+<p>В новых поколениях <em>BMW X1 (U11)</em> и <em>X2</em> с операционной системой iDrive 9 эта функция присутствует в списке доступных опций, но часто входит в состав пакетов "Technology Package" или доступна за дополнительную плату. В предыдущих поколениях этих моделей функция встречалась крайне редко или отсутствовала.</p>
+</details></div>
+                    <!--#include virtual="/ssi/article_after.html" -->
+
+                </article>
+                <aside class="article-sidebar"><!--#include virtual="/ssi/sidebar_top.html" --><nav class="sidebar-search"><div class="sidebar-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск статей..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav><!--#include virtual="/ssi/sidebar_before_toc.html" --><nav class="sidebar-toc" id="sidebarToc"><h3>Содержание</h3><ul><li><a href="#принцип-работы-и-зона-распознавания">Принцип работы и зона распознавания</a></li><li><a href="#активация-и-базовая-настройка-в-меню-idrive">Активация и базовая настройка в меню iDrive</a></li><li><a href="#полный-список-поддерживаемых-жестов">Полный список поддерживаемых жестов</a></li><li><a href="#совместимость-с-моделями-и-версиями-idrive">Совместимость с моделями и версиями iDrive</a></li><li><a href="#персонализация-и-создание-своих-команд">Персонализация и создание своих команд</a></li><li><a href="#типичные-проблемы-и-troubleshooting">Типичные проблемы и troubleshooting</a></li><li><a href="#часто-задаваемые-вопросы-faq">Часто задаваемые вопросы (FAQ)</a></li></ul></nav><!--#include virtual="/ssi/sidebar_before_related.html" --><nav class="sidebar-related"><h3>Похожие статьи</h3><ul><li><a href="/articles/3/30/303-stil-bmv.html" class="related-card">303 BMW: История легендарной модели и её влияние на бренд</a></li><li><a href="/articles/p/pr/proverit-komplektatsiyu-bmv.html" class="related-card">Проверить комплектацию БМВ по VIN: Полная инструкция</a></li><li><a href="/articles/m/mu/muzhik-v-pakete-bmv.html" class="related-card">Мужик в пакете БМВ: мифы, реальность и культура тюнинга</a></li><li><a href="/articles/1/13/135b11-oshibka-bmv.html" class="related-card">Ошибка 135b11 BMW: причины, диагностика и ремонт</a></li><li><a href="/articles/b/bm/bmv-na-shtampakh.html" class="related-card">BMW на штампах: выбор дисков для зимы и тесты</a></li></ul></nav><!--#include virtual="/ssi/sidebar_after_related.html" --></aside>
+            </div>
+        </div>
+    </main>
+
+    <!--#include virtual="/ssi/before_related_bottom.html" -->
+    <section class="related-bottom">
+        <div class="container">
+            <h2 class="related-bottom-heading">📖 Читайте также</h2>
+            <div class="related-bottom-grid"><a href="/articles/3/30/303-stil-bmv.html" class="related-bottom-card"><span class="related-bottom-title">303 BMW: История легендарной модели и её влияние на бренд</span><span class="related-bottom-desc">Полный обзор BMW 303: технические характеристики, история создания шестицилиндрового двигателя и узн</span></a><a href="/articles/p/pr/proverit-komplektatsiyu-bmv.html" class="related-bottom-card"><span class="related-bottom-title">Проверить комплектацию БМВ по VIN: Полная инструкция</span><span class="related-bottom-desc">Узнайте, как проверить комплектацию BMW по VIN-коду. Разбор заводских опций, расшифровка кодов M-пак</span></a><a href="/articles/m/mu/muzhik-v-pakete-bmv.html" class="related-bottom-card"><span class="related-bottom-title">Мужик в пакете БМВ: мифы, реальность и культура тюнинга</span><span class="related-bottom-desc">Почему мужик в пакете БМВ стал мемом? Разбираем стереотипы, реальные истории и влияние субкультуры н</span></a><a href="/articles/1/13/135b11-oshibka-bmv.html" class="related-bottom-card"><span class="related-bottom-title">Ошибка 135b11 BMW: причины, диагностика и ремонт</span><span class="related-bottom-desc">Разбор ошибки 135b11 в автомобилях BMW. Причины появления, диагностика системы DME, методы устранени</span></a><a href="/articles/b/bm/bmv-na-shtampakh.html" class="related-bottom-card"><span class="related-bottom-title">BMW на штампах: выбор дисков для зимы и тесты</span><span class="related-bottom-desc">Стоит ли ставить BMW на штампы? Полный разбор плюсов и минусов, влияние на подвеску, тесты управляем</span></a><a href="/articles/d/dv/dvigatel-bmv-m30.html" class="related-bottom-card"><span class="related-bottom-title">Двигатель БМВ М30: Полный обзор, ресурс и тюнинг легендарного мотора</span><span class="related-bottom-desc">Подробный анализ двигателя BMW M30: характеристики, модификации, типичные проблемы, рекомендации по </span></a></div>
+        </div>
+    </section>
+    <!--#include virtual="/ssi/after_related_bottom.html" -->
+
+    <footer class="site-footer-premium">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">🚗 BMW wiki</div>
+                    <p class="footer-about">Гид по обслуживанию, ремонту и тюнингу BMW — от классики до современных моделей.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Разделы</h4>
+                    <ul><li><a href="/category/другое/">📁 Другое</a></li>
+<li><a href="/category/e39/">📁 E39</a></li>
+<li><a href="/category/x5/">📁 X5</a></li>
+<li><a href="/category/e34/">📁 E34</a></li>
+<li><a href="/category/e60/">📁 E60</a></li>
+<li><a href="/category/x3/">📁 X3</a></li></ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Информация</h4>
+                    <ul>
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="/about.html">О проекте</a></li>
+                        <li><a href="/categories.html">Все разделы</a></li>
+                        <li><a href="/contact.html">Контакты</a></li>
+                        <li><a href="/privacy.html">Конфиденциальность</a></li>
+                        <li><a href="/sitemap.xml">Карта сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 BMW wiki. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="cookie-popup">
+        <div class="cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            popup.classList.add('visible');
+            btn.onclick = () => {
+                localStorage.setItem('cookie-accepted', 'true');
+                popup.classList.remove('visible');
+            };
+        }
+    })();
+    </script>
+    <!--#include virtual="/ssi/body_bottom.html" -->
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>
