@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🚗</text></svg>">
+    <title>BMW Scanner 1.4.0: скачать, установить и настроить для диагностики — BMW wiki</title>
+    <meta name="description" content="Подробный гайд по BMW Scanner 1.4.0: где скачать, как установить, поддерживаемые модели и ошибки. Полная инструкция для диагностики BMW своими руками.">
+    <link rel="canonical" href="https://bmw-wiki.vercel.app/articles/b/bm/bmw-skaner-140.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="BMW Scanner 1.4.0: скачать, установить и настроить для диагностики">
+    <meta property="og:description" content="Подробный гайд по BMW Scanner 1.4.0: где скачать, как установить, поддерживаемые модели и ошибки. Полная инструкция для диагностики BMW своими руками.">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1776169771">
+    <style>
+    .site-footer-premium {
+        margin-top: 60px; padding: 40px 0 0; background: #1e293b; color: #94a3b8;
+    }
+    .footer-grid {
+        display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px;
+        padding-bottom: 32px; border-bottom: 1px solid #334155;
+    }
+    .footer-brand { font-size: 1.2rem; font-weight: 700; color: #f1f5f9; margin-bottom: 12px; }
+    .footer-about { font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px; }
+    .footer-updated { font-size: 0.8rem; color: #64748b; }
+    .footer-col h4 { color: #f1f5f9; font-size: 0.95rem; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 8px; }
+    .footer-col a { color: #94a3b8; font-size: 0.9rem; transition: color 0.2s; }
+    .footer-col a:hover { color: #60a5fa; }
+    .footer-bottom { padding: 20px 0; text-align: center; font-size: 0.85rem; }
+    @media (max-width: 640px) {
+        .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+    .cookie-popup {
+        position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; color: #fff;
+        padding: 16px; transition: transform 0.5s ease; z-index: 9999; border-top: 2px solid #2563eb;
+        transform: translateY(100%);
+    }
+    .cookie-popup.visible { transform: translateY(0); }
+    .cookie-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 0.9rem; }
+    .cookie-btn { background: #2563eb; color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .cookie-btn:hover { background: #1d4ed8; }
+    @media (max-width: 640px) {
+        .cookie-inner { flex-direction: column; text-align: center; }
+    }
+</style>
+    
+    <!--#include virtual="/ssi/head.html" -->
+</head>
+<body>
+        <!--#include virtual="/ssi/body_top.html" -->
+    <style>
+    .nav-dropdown { position: relative; display: inline-block; }
+    .dropdown-toggle {
+        background: none; border: none; cursor: pointer;
+        font: inherit; color: inherit; padding: 8px 12px;
+        border-radius: 8px; transition: background 0.2s;
+    }
+    .dropdown-toggle:hover { background: rgba(0,0,0,0.05); }
+    .dropdown-menu {
+        display: none; position: absolute; right: 0; top: 100%;
+        min-width: 240px; max-height: 70vh; overflow-y: auto;
+        background: var(--card-bg, #fff); border: 1px solid var(--border, #e5e7eb);
+        border-radius: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        padding: 8px 0; z-index: 1000;
+    }
+    .nav-dropdown::after {
+        content: ''; position: absolute; left: 0; right: 0;
+        top: 100%; height: 12px;
+    }
+    .nav-dropdown:hover .dropdown-menu,
+    .nav-dropdown:focus-within .dropdown-menu { display: block; }
+    .dropdown-item {
+        display: block; padding: 10px 20px; color: var(--text, #1f2937);
+        text-decoration: none; font-size: 0.95rem; transition: background 0.15s;
+        white-space: nowrap;
+    }
+    .dropdown-item:hover { background: rgba(37,99,235,0.06); color: var(--primary, #2563eb); }
+    @media (max-width: 768px) {
+        .main-nav > .nav-link { display: none; }
+        .dropdown-toggle { display: none; }
+        .dropdown-menu {
+            display: block !important; position: static;
+            box-shadow: none; border: none; border-radius: 0;
+            min-width: auto; max-height: none; padding: 0;
+            background: transparent;
+        }
+        .dropdown-item {
+            padding: 8px 0; font-size: 1rem;
+        }
+    }
+    </style>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">🚗</span>
+                <span>BMW wiki</span>
+            </a>
+            <button class="mobile-menu-btn" aria-label="Меню" id="menuBtn">☰</button>
+            <nav class="main-nav" id="mainNav">
+                <a href="/category/e39/" class="nav-link">📁 E39</a>
+<a href="/category/m5/" class="nav-link">📁 M5</a>
+<a href="/category/e60/" class="nav-link">📁 E60</a>
+<a href="/category/x5/" class="nav-link">📁 X5</a>
+<div class="nav-dropdown">
+            <button class="nav-link dropdown-toggle">📂 Все разделы ▾</button>
+            <div class="dropdown-menu"><a href="/category/e39/" class="dropdown-item">📁 E39</a>
+<a href="/category/m5/" class="dropdown-item">📁 M5</a>
+<a href="/category/e60/" class="dropdown-item">📁 E60</a>
+<a href="/category/x5/" class="dropdown-item">📁 X5</a>
+<a href="/category/e34/" class="dropdown-item">📁 E34</a>
+<a href="/category/f30/" class="dropdown-item">📁 F30</a>
+<a href="/category/x3/" class="dropdown-item">📁 X3</a>
+<a href="/category/e46/" class="dropdown-item">📁 E46</a>
+<a href="/category/f10/" class="dropdown-item">📁 F10</a>
+<a href="/category/e90/" class="dropdown-item">📁 E90</a>
+<a href="/category/x6/" class="dropdown-item">📁 X6</a>
+<a href="/category/m3/" class="dropdown-item">📁 M3</a>
+<a href="/category/g30/" class="dropdown-item">📁 G30</a>
+<a href="/category/x1/" class="dropdown-item">📁 X1</a>
+<a href="/category/e36/" class="dropdown-item">📁 E36</a>
+<a href="/category/e53/" class="dropdown-item">📁 E53</a>
+<a href="/category/g20/" class="dropdown-item">📁 G20</a>
+<a href="/category/x7/" class="dropdown-item">📁 X7</a>
+<a href="/category/5-серия/" class="dropdown-item">📁 5 Серия</a>
+<a href="/category/e38/" class="dropdown-item">📁 E38</a>
+<a href="/category/e30/" class="dropdown-item">📁 E30</a>
+<a href="/category/3-серия/" class="dropdown-item">📁 3 Серия</a>
+<a href="/category/7-серия/" class="dropdown-item">📁 7 Серия</a>
+<a href="/category/e70/" class="dropdown-item">📁 E70</a>
+<a href="/category/1-серия/" class="dropdown-item">📁 1 Серия</a>
+<a href="/category/m4/" class="dropdown-item">📁 M4</a>
+<a href="/category/f15/" class="dropdown-item">📁 F15</a>
+<a href="/category/m8/" class="dropdown-item">📁 M8</a>
+<a href="/category/g05/" class="dropdown-item">📁 G05</a>
+<a href="/category/x4/" class="dropdown-item">📁 X4</a>
+<a href="/category/e65/" class="dropdown-item">📁 E65</a>
+<a href="/category/2-серия/" class="dropdown-item">📁 2 Серия</a>
+<a href="/category/6-серия/" class="dropdown-item">📁 6 Серия</a>
+<a href="/category/4-серия/" class="dropdown-item">📁 4 Серия</a>
+<a href="/category/8-серия/" class="dropdown-item">📁 8 Серия</a>
+<a href="/category/i8/" class="dropdown-item">📁 I8</a>
+<a href="/category/x2/" class="dropdown-item">📁 X2</a>
+<a href="/category/i3/" class="dropdown-item">📁 I3</a>
+<a href="/category/f25/" class="dropdown-item">📁 F25</a>
+<a href="/category/xm/" class="dropdown-item">📁 Xm</a>
+<a href="/category/e92/" class="dropdown-item">📁 E92</a>
+<a href="/category/m6/" class="dropdown-item">📁 M6</a>
+<a href="/category/e87/" class="dropdown-item">📁 E87</a>
+<a href="/category/z4/" class="dropdown-item">📁 Z4</a>
+<a href="/category/m2/" class="dropdown-item">📁 M2</a>
+<a href="/category/авто/" class="dropdown-item">📁 Авто</a>
+<a href="/category/ix/" class="dropdown-item">📁 Ix</a>
+<a href="/category/g60/" class="dropdown-item">📁 G60</a>
+<a href="/category/s1000rr/" class="dropdown-item">📁 S1000Rr</a>
+<a href="/category/e28/" class="dropdown-item">📁 E28</a>
+<a href="/category/e32/" class="dropdown-item">📁 E32</a>
+<a href="/category/g06/" class="dropdown-item">📁 G06</a>
+<a href="/category/f16/" class="dropdown-item">📁 F16</a>
+<a href="/category/e83/" class="dropdown-item">📁 E83</a>
+<a href="/category/f20/" class="dropdown-item">📁 F20</a>
+<a href="/category/r1200gs/" class="dropdown-item">📁 R1200Gs</a>
+<a href="/category/z3/" class="dropdown-item">📁 Z3</a>
+<a href="/category/e71/" class="dropdown-item">📁 E71</a>
+<a href="/category/g01/" class="dropdown-item">📁 G01</a>
+<a href="/category/e63/" class="dropdown-item">📁 E63</a>
+<a href="/category/f01/" class="dropdown-item">📁 F01</a>
+<a href="/category/g11/" class="dropdown-item">📁 G11</a>
+<a href="/category/i5/" class="dropdown-item">📁 I5</a>
+<a href="/category/i4/" class="dropdown-item">📁 I4</a>
+<a href="/category/m1/" class="dropdown-item">📁 M1</a>
+<a href="/category/e21/" class="dropdown-item">📁 E21</a>
+<a href="/category/g70/" class="dropdown-item">📁 G70</a>
+<a href="/category/f90/" class="dropdown-item">📁 F90</a>
+<a href="/category/x8/" class="dropdown-item">📁 X8</a>
+<a href="/category/ix3/" class="dropdown-item">📁 Ix3</a>
+<a href="/category/i7/" class="dropdown-item">📁 I7</a>
+<a href="/category/r1250gs/" class="dropdown-item">📁 R1250Gs</a>
+<a href="/category/e24/" class="dropdown-item">📁 E24</a>
+<a href="/category/r18/" class="dropdown-item">📁 R18</a>
+<a href="/category/drugoe/" class="dropdown-item">📁 Другие модели</a></div>
+        </div>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="breadcrumbs" aria-label="Навигация">
+        <div class="container"><a href="/">Главная</a><span class="breadcrumb-sep">›</span><a href="/category/e46/">E46</a><span class="breadcrumb-sep">›</span><span class="breadcrumb-current">BMW Scanner 1.4.0: скачать, установить и настроить для диагностики</span></div>
+    </nav>
+
+    <main class="site-main">
+        <div class="container">
+            <div class="article-layout">
+                <article class="article-main">
+                    
+                    <h1>BMW Scanner 1.4.0: полное руководство по диагностике автомобилей BMW</h1>
+                    <nav class="mobile-toc"><details><summary>📋 Содержание</summary><ul><li><a href="#что-такое-bmw-scanner-140-и-для-каких-моделей-он-подходит">Что такое BMW Scanner 1.4.0 и для каких моделей он подходит</a></li><li><a href="#где-скачать-bmw-scanner-140-проверенные-источники">Где скачать BMW Scanner 1.4.0: проверенные источники</a></li><li><a href="#какой-адаптер-нужен-для-работы-с-bmw-scanner-140">Какой адаптер нужен для работы с BMW Scanner 1.4.0</a></li><li><a href="#установка-и-настройка-bmw-scanner-140-пошаговая-инструкция">Установка и настройка BMW Scanner 1.4.0: пошаговая инструкция</a></li><li><a href="#расшифровка-ошибок-и-диагностика-с-bmw-scanner-140">Расшифровка ошибок и диагностика с BMW Scanner 1.4.0</a></li><li><a href="#скрытые-функции-и-тюнинг-с-помощью-bmw-scanner-140">Скрытые функции и тюнинг с помощью BMW Scanner 1.4.0</a></li><li><a href="#альтернативы-bmw-scanner-140-когда-стоит-выбрать-другое-по">Альтернативы BMW Scanner 1.4.0: когда стоит выбрать другое ПО</a></li><li><a href="#частые-проблемы-и-их-решения">Частые проблемы и их решения</a></li><li><a href="#faq-ответы-на-частые-вопросы">FAQ: ответы на частые вопросы</a></li></ul></details></nav>
+                    <!--#include virtual="/ssi/article_before.html" -->
+                    <div class="article-body"><p>Программное обеспечение <em>BMW Scanner 1.4.0</em> давно стало легендарным инструментом среди владельцев автомобилей <em>BMW</em>, особенно для моделей <strong>E39, E46, E53</strong> и других серий начала 2000-х. Это одно из немногих решений, позволяющих проводить глубокую диагностику электронных систем без дорогостоящего оборудования дилерских центров. Версия <strong>1.4.0</strong> считается одной из самых стабильных и функциональных, несмотря на свой возраст.</p>
+
+<p>В отличие от современных сканеров с облачными базами данных, <em>BMW Scanner 1.4.0</em> работает локально, что делает его независимым от интернет-соединения. Программа поддерживает считывание и сброс ошибок <code>DTC</code>, тестирование исполнительных механизмов, а также доступ к скрытым функциям бортового компьютера. Однако её установка и настройка требуют определённых знаний — от выбора правильного адаптера <code>K+DCAN</code> до конфигурации COM-портов в Windows.</p>
+
+<p>В этой статье мы разберём всё, что нужно знать о <em>BMW Scanner 1.4.0</em>: где скачать оригинальную версию, как избежать вирусов, какие адаптеры совместимы с программой, и как интерпретировать наиболее распространённые ошибки. Особое внимание уделим <strong>практическим нюансам</strong>, которые редко упоминаются в стандартных инструкциях — например, почему программа может не видеть автомобиль или как обойти ошибку <code>"Interface not connected"</code>.</p>
+
+<h2 id="что-такое-bmw-scanner-140-и-для-каких-моделей-он-подходит">Что такое BMW Scanner 1.4.0 и для каких моделей он подходит</h2>
+
+<p><em>BMW Scanner 1.4.0</em> — это диагностическое ПО, разработанное специально для автомобилей <em>BMW</em> с шиной <code>K-Line</code> (модели до 2008 года) и <code>CAN</code> (поздние версии). Программа позволяет:</p>
+
+<ul>
+  <li>🔧 Считывать и сбрасывать ошибки <code>DTC</code> из всех электронных блоков (ECU)</li>
+  <li>📊 Просматривать параметры в реальном времени (например, температуру двигателя, напряжение бортовой сети)</li>
+  <li>🔄 Тестировать исполнительные механизмы (клапаны, вентиляторы, форсунки)</li>
+  <li>🔐 Активировать скрытые функции (например, отключение <em>EML</em> или корректировку одометра)</li>
+</ul>
+
+<p>Основное преимущество версии <strong>1.4.0</strong> — поддержка широкого спектра моделей, включая:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Серия BMW</th>
+      <th>Поддерживаемые модели</th>
+      <th>Тип шины</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><em>E36</em></td>
+      <td>316i, 318i, 320i, 323i, 325i, 328i</td>
+      <td><code>K-Line</code></td>
+    </tr>
+    <tr>
+      <td><em>E39</em></td>
+      <td>520i, 523i, 525i, 528i, 530i, 540i</td>
+      <td><code>K-Line / CAN</code></td>
+    </tr>
+    <tr>
+      <td><em>E46</em></td>
+      <td>316i, 318i, 320i, 323i, 325i, 330i, M3</td>
+      <td><code>K-Line / CAN</code></td>
+    </tr>
+    <tr>
+      <td><em>E53</em></td>
+      <td>X5 3.0i, X5 4.4i, X5 4.6is, X5 4.8is</td>
+      <td><code>CAN</code></td>
+    </tr>
+    <tr>
+      <td><em>E60/E61</em></td>
+      <td>520i, 525i, 530i (до 2007 года)</td>
+      <td><code>CAN</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Важно учитывать, что для автомобилей <strong>после 2008 года</strong> (например, <em>E90, F10</em>) <em>BMW Scanner 1.4.0</em> может работать некорректно или не поддерживать некоторые блоки. В таких случаях рекомендуется использовать <em>ISTA-D</em> или <em>INPA</em>.</p>
+
+<blockquote>⚠️ <strong>Внимание:</strong> Программа не поддерживает автомобили с системой <em>iDrive</em> (например, <em>E65/E66</em>). Для них требуется специализированное ПО, такое как <em>NCS Expert</em>.</blockquote>
+
+<h2 id="где-скачать-bmw-scanner-140-проверенные-источники">Где скачать BMW Scanner 1.4.0: проверенные источники</h2>
+
+<p>Один из главных рисков при скачивании <em>BMW Scanner 1.4.0</em> — попадание на сайты с вирусами или модифицированными версиями программы. Оригинальная версия распостранялась бесплатно, но сейчас её сложно найти в чистом виде. Вот проверенные источники:</p>
+
+<ul>
+  <li>🔗 <a href="https://www.bmw-scanner.ru" target="_blank" rel="nofollow">Официальный архив</a> (русскоязычный ресурс с оригинальными версиями)</li>
+  <li>🔗 <a href="https://www.e38.org/forum" target="_blank" rel="nofollow">Форум E38.org</a> (раздел "Diagnostic Software")</li>
+  <li>🔗 <a href="https://www.bimmerforums.com" target="_blank" rel="nofollow">Bimmerforums</a> (тема с проверенными ссылками)</li>
+</ul>
+
+<p>Перед скачиванием обязательно проверьте:</p>
+<ol>
+  <li>Размер файла — оригинальный архив весит <strong>~15-20 МБ</strong>.</li>
+  <li>Наличие файла <code>BMWScanner.exe</code> в корне архива.</li>
+  <li>Отсутствие дополнительных установщиков (например, <code>setup.exe</code> с рекламой).</li>
+</ol>
+
+<blockquote>⚠️ <strong>Внимание:</strong> Если в архиве присутствуют файлы с расширением <code>.bat</code> или <code>.vbs</code>, не запускайте их — это может быть скрипт для установки вредоносного ПО. Достаточно только <code>BMWScanner.exe</code>.</blockquote>
+
+<p><mark>Единственная официальная версия 1.4.0 не требует активации или регистрации. Если программа просит ключ — это модифицированная сборка.</mark></p>
+
+<div class="attention-box attention-info"><div><strong>📊 Какой адаптер вы используете для диагностики BMW?</strong><ul><li>K+DCAN USB</li><li>INPA K-Line</li><li>ELM327</li><li>Другой</li><li>Ещё не выбрал</li></ul></div></div>
+
+<h2 id="какой-адаптер-нужен-для-работы-с-bmw-scanner-140">Какой адаптер нужен для работы с BMW Scanner 1.4.0</h2>
+
+<p>Без правильного адаптера <em>BMW Scanner 1.4.0</em> просто не сможет подключиться к автомобилю. Программа работает с двумя типами интерфейсов:</p>
+
+<ol>
+  <li><strong><code>K-Line</code></strong> — для автомобилей до 2001 года (например, <em>E36, E39 ранних версий</em>).</li>
+  <li><strong><code>K+DCAN</code></strong> — для автомобилей с 2001 по 2008 год (например, <em>E46, E53, E60</em>).</li>
+</ol>
+
+<p>Самые надёжные адаптеры:</p>
+
+<ul>
+  <li>🔌 <strong>USB K+DCAN от <em>OneStopElectronics</strong></strong> — лучший выбор для большинства моделей.</li>
+  <li>🔌 <strong><em>INPA K-Line</strong> (синий адаптер)</em> — подходит для старых <em>BMW</em>, но не поддерживает <code>CAN</code>.</li>
+  <li>🔌 <strong><em>FTDI-based</strong> адаптеры</em> — требуют ручной настройки <code>COM-порта</code>.</li>
+</ul>
+
+<p>Важно: дешёвые китайские адаптеры на базе <code>ELM327</code> (например, для <em>Torque Pro</em>) <strong>не подойдут</strong> — они не поддерживают протоколы <em>BMW</em>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Адаптер</th>
+      <th>Поддержка K-Line</th>
+      <th>Поддержка CAN</th>
+      <th>Цена (примерно)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>USB K+DCAN (OneStop)</td>
+      <td>✅ Да</td>
+      <td>✅ Да</td>
+      <td>~3000-4000 ₽</td>
+    </tr>
+    <tr>
+      <td>INPA K-Line (синий)</td>
+      <td>✅ Да</td>
+      <td>❌ Нет</td>
+      <td>~1500-2000 ₽</td>
+    </tr>
+    <tr>
+      <td>FTDI232RL (самостоятельная сборка)</td>
+      <td>✅ Да</td>
+      <td>⚠️ Частично</td>
+      <td>~1000 ₽</td>
+    </tr>
+    <tr>
+      <td>ELM327 (Bluetooth/Wi-Fi)</td>
+      <td>❌ Нет</td>
+      <td>❌ Нет</td>
+      <td>~500 ₽</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Если вы покупаете адаптер на <em>AliExpress</em> или <em>eBay</em>, обращайте внимание на отзывы — многие дешёвые клоны не работают с <em>BMW Scanner</em> из-за неправильной прошивки чипа <code>FT232RL</code>.</p>
+
+
+<p>Установить драйверы для адаптера (например, FTDI)</p>
+<p>Проверить номер COM-порта в "Диспетчере устройств"</p>
+<p>Подключить адаптер к разъёму OBD-II в автомобиле</p>
+<p>Запустить BMW Scanner от имени администратора</p>
+<p>Выбрать правильный COM-порт в настройках программы--></p>
+
+<h2 id="установка-и-настройка-bmw-scanner-140-пошаговая-инструкция">Установка и настройка BMW Scanner 1.4.0: пошаговая инструкция</h2>
+
+<p>Процесс установки <em>BMW Scanner 1.4.0</em> прост, но требует внимания к деталям. Вот пошаговый алгоритм:</p>
+
+<ol>
+  <li><strong>Скачайте архив</strong> с программой (см. раздел выше) и распакуйте его в папку, например, <code>C:\BMWScanner\</code>.</li>
+  <li><strong>Установите драйверы для адаптера</strong> (если они не установились автоматически). Для <code>FTDI</code>-адаптеров скачайте драйвер с <a href="https://www.ftdichip.com/Drivers/D2XX.htm" target="_blank" rel="nofollow">официального сайта</a>.</li>
+  <li><strong>Подключите адаптер к USB-порту</strong> и проверьте его в <code>Диспетчере устройств</code> (должен появиться <code>COM-порт</code>).</li>
+  <li><strong>Запустите <code>BMWScanner.exe</code> от имени администратора</strong> (правая кнопка мыши → "Запуск от имени администратора").</li>
+</ol>
+
+<p>При первом запуске программа попросит выбрать <code>COM-порт</code>. Если порт не определяется:</p>
+<ul>
+  <li>🔄 Переподключите адаптер.</li>
+  <li>🔧 Проверьте настройки порта: скорость <code>9600</code>, биты данных <code>8</code>, стоп-бит <code>1</code>, чётность <code>None</code>.</li>
+  <li>🛠️ Обновите драйверы адаптера.</li>
+</ul>
+
+<p>После подключения к автомобилю (зажигание должно быть включено!) нажмите <code>Connect</code>. Если соединение успешно, внизу окна появится надпись <code>"Connected to ECU"</code>.</p>
+
+<details class="faq-item"><summary>Что делать, если программа не видит автомобиль?</summary><div class="faq-answer"><p>
+<p>1. Проверьте, включено ли зажигание (не обязательно заводить двигатель).</p>
+<p>2. Убедитесь, что адаптер плотно вставлен в разъём OBD-II.</p>
+<p>3. Попробуйте другой USB-порт (лучше USB 2.0).</p>
+<p>4. Если используется <code>FTDI</code>-адаптер, проверьте, не конфликтует ли он с другими COM-устройствами.</p>
+<p>5. В настройках программы выберите правильный тип шины (<code>K-Line</code> или <code>CAN</code>).</p></div></details></p>
+
+<p><strong>Типичные ошибки при подключении:</strong></p>
+<ul>
+  <li>🚨 <code>"Interface not connected"</code> — адаптер не опознаётся или не подключён.</li>
+  <li>🚨 <code>"No response from ECU"</code> — неправильно выбран тип шины или проблемы с проводкой автомобиля.</li>
+  <li>🚨 <code>"COM port busy"</code> — порт занят другой программой (закройте <em>INPA</em> или <em>ISTA</em>).</li>
+</ul>
+
+<h2 id="расшифровка-ошибок-и-диагностика-с-bmw-scanner-140">Расшифровка ошибок и диагностика с BMW Scanner 1.4.0</h2>
+
+<p>Одна из главных функций <em>BMW Scanner 1.4.0</em> — считывание и расшифровка ошибок <code>DTC</code>. Программа отображает коды в формате <code>PXXXX</code>, <code>UXXXX</code> или <code>BXXXX</code>, где:</p>
+<ul>
+  <li><code>P</code> — ошибки двигателя/трансмиссии.</li>
+  <li><code>U</code> — проблемы с шиной данных.</li>
+  <li><code>B</code> — ошибки кузовных систем.</li>
+</ul>
+
+<p>Примеры распространённых ошибок и их значение:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Код ошибки</th>
+      <th>Описание</th>
+      <th>Возможная причина</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>P0171</code></td>
+      <td>Слишком бедная смесь (банк 1)</td>
+      <td>Подсос воздуха, неисправный <em>MAF-сенсор</em>, забитые форсунки</td>
+    </tr>
+    <tr>
+      <td><code>P0300</code></td>
+      <td>Множественные пропуски зажигания</td>
+      <td>Неисправные свечи, катушки, низкое качество топлива</td>
+    </tr>
+    <tr>
+      <td><code>U0100</code></td>
+      <td>Потеря связи с <em>ECU</em></td>
+      <td>Проблемы с проводкой <code>CAN-шины</code> или блоком управления</td>
+    </tr>
+    <tr>
+      <td><code>B1234</code></td>
+      <td>Ошибка датчика положения педали тормоза</td>
+      <td>Неисправный датчик или проблемы с проводкой</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Чтобы сбросить ошибки:</p>
+<ol>
+  <li>Выберите блок <code>ECU</code>, в котором зафиксирована ошибка.</li>
+  <li>Нажмите <code>Read Codes</code> для подтверждения.</li>
+  <li>Кликните <code>Erase Codes</code> — ошибки будут удалены из памяти блока.</li>
+</ol>
+
+<blockquote>⚠️ <strong>Внимание:</strong> Сброс ошибок без устранения их причины приведёт к повторному появлению кода. Например, если стирать <code>P0300</code> (пропуски зажигания) без замены свечей, ошибка вернётся через несколько километров.</blockquote>
+
+<p>Для более глубокой диагностики можно использовать функцию <code>Live Data</code>, которая показывает параметры в реальном времени:</p>
+<ul>
+  <li>📉 <code>RPM</code> — обороты двигателя.</li>
+  <li>🌡️ <code>Coolant Temp</code> — температура охлаждающей жидкости.</li>
+  <li>⚡ <code>Battery Voltage</code> — напряжение бортовой сети.</li>
+</ul>
+
+<div class="attention-box attention-tip"><span class="attention-icon">💡</span><p>Если программа не показывает параметры в реальном времени, попробуйте переподключить адаптер или выбрать другой блок <code>ECU</code> в меню. Иногда помогает перезапуск программы с правами администратора.</p></div>
+
+<h2 id="скрытые-функции-и-тюнинг-с-помощью-bmw-scanner-140">Скрытые функции и тюнинг с помощью BMW Scanner 1.4.0</h2>
+
+<p>Помимо диагностики, <em>BMW Scanner 1.4.0</em> позволяет активировать скрытые функции автомобиля. Это возможно благодаря доступу к блокам <code>ECU</code>, которые в стандартной комплектации отключены. Вот что можно сделать:</p>
+
+<ul>
+  <li>🔦 <strong>Отключение <em>EML</strong> (Electronic Motor Load)</strong> — полезно при установке нештатных деталей (например, фильтра нулевого сопротивления).</li>
+  <li>🔊 <strong>Активация звукового сигнала при блокировке дверей</strong> — улучшает безопасность.</li>
+  <li>📶 <strong>Разблокировка дополнительных каналов бортового компьютера</strong> (например, отображение температуры масла).</li>
+  <li>🔄 <strong>Корректировка показаний одометра</strong> (только для законных целей, например, после замены приборной панели).</li>
+</ul>
+
+<p>Для активации скрытых функций:</p>
+<ol>
+  <li>Выберите блок <code>ECU</code>, отвечающий за нужную функцию (например, <code>IKE</code> для приборной панели).</li>
+  <li>Перейдите в меню <code>Coding</code> или <code>Adaptation</code>.</li>
+  <li>Найдите параметр, который нужно изменить (например, <code>HUP_HORN</code> для звукового сигнала).</li>
+  <li>Введите новое значение и сохраните изменения.</li>
+</ol>
+
+<blockquote>⚠️ <strong>Внимание:</em> Неправильное кодирование может привести к сбоям в работе электронных систем. Например, ошибочное изменение параметров в блоке <code>DME</code> (двигатель) может вызвать проблемы с запуском. Всегда сохраняйте оригинальные настройки перед изменениями!</blockquote>
+
+<p>Пример активации звукового сигнала при блокировке:</p>
+<pre><code>1. Подключитесь к блоку IKE (Instrument Cluster).
+<p>2. Выберите "Coding" → "HUP_HORN".</p>
+<p>3. Измените значение с "nicht_aktiv" на "aktiv".</p>
+<p>4. Сохраните и перезагрузите приборную панель (выключите/включите зажигание).</code></pre></p>
+
+<h2 id="альтернативы-bmw-scanner-140-когда-стоит-выбрать-другое-по">Альтернативы BMW Scanner 1.4.0: когда стоит выбрать другое ПО</h2>
+
+<p>Хотя <em>BMW Scanner 1.4.0</em> остаётся одним из самых популярных инструментов, в некоторых случаях лучше использовать альтернативные программы:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Программа</th>
+      <th>Преимущества</th>
+      <th>Недостатки</th>
+      <th>Для каких моделей</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><em>INPA</em></td>
+      <td>Более глубокая диагностика, поддержка <code>EDIABAS</code></td>
+      <td>Сложная настройка, требует адаптера <code>INPA K-Line</code></td>
+      <td><em>E36, E39, E46, E53</em></td>
+    </tr>
+    <tr>
+      <td><em>ISTA-D (Rheingold)</em></td>
+      <td>Официальное ПО от BMW, поддержка новых моделей</td>
+      <td>Требует мощный ПК, сложный интерфейс</td>
+      <td><em>E60, E90, F10 и новее</em></td>
+    </tr>
+    <tr>
+      <td><em>Torque Pro</em></td>
+      <td>Удобный интерфейс, работа по Bluetooth</td>
+      <td>Ограниченная функциональность для BMW</td>
+      <td>Любые с OBD-II</td>
+    </tr>
+    <tr>
+      <td><em>NCS Expert</em></td>
+      <td>Кодирование и программирование блоков</td>
+      <td>Сложно освоить новичку</td>
+      <td><em>E39, E46, E60, E90</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Выбор программы зависит от задачи:</p>
+<ul>
+  <li>🔧 Для <strong>простой диагностики</strong> (считывание/сброс ошибок) достаточно <em>BMW Scanner 1.4.0</em>.</li>
+  <li>🔧 Для <strong>глубокого сканирования</strong> (например, тестирование форсунок) лучше <em>INPA</em>.</li>
+  <li>🔧 Для <strong>кодирования</strong> (изменение настроек блоков) нужен <em>NCS Expert</em>.</li>
+  <li>🔧 Для <strong>новых моделей</strong> (после 2010 года) потребуется <em>ISTA-D</em>.</li>
+</ul>
+
+<p>Если вы работаете с <em>BMW Scanner 1.4.0</em> и сталкиваетесь с ограничениями (например, не видите какой-то блок), попробуйте комбинацию программ. Например, для <em>E46</em> многие используют <em>BMW Scanner</em> для быстрой диагностики и <em>INPA</em> для детального анализа.</p>
+
+<div class="attention-box attention-tip"><span class="attention-icon">💡</span><p>BMW Scanner 1.4.0 идеален для владельцев BMW до 2008 года, но для новых моделей или сложного кодирования лучше использовать специализированное ПО, такое как ISTA-D или NCS Expert.</p></div>
+
+<h2 id="частые-проблемы-и-их-решения">Частые проблемы и их решения</h2>
+
+<p>Даже при правильной установке <em>BMW Scanner 1.4.0</em> могут возникать ошибки. Вот самые распространённые из них и способы их устранения:</p>
+
+<ul>
+  <li>🚫 <strong>Программа не запускается</strong><br>
+  <em>Причина:</em> отсутствуют библиотеки <code>.NET Framework 2.0</code> или права администратора.<br>
+  <em>Решение:</em> установите <a href="https://dotnet.microsoft.com/download/dotnet-framework/net20" target="_blank" rel="nofollow">.NET Framework 2.0</a> и запустите программу от имени администратора.</li>
+
+  <li>🚫 <strong>Не определяется COM-порт</strong><br>
+  <em>Причина:</em> драйверы адаптера не установлены или конфликтуют.<br>
+  <em>Решение:</em> удалите старые драйверы через <code>Диспетчер устройств</code> и установите их заново.</li>
+
+  <li>🚫 <strong>Ошибка "No response from ECU"</strong><br>
+  <em>Причина:</em> неправильно выбран тип шины (<code>K-Line</code> вместо <code>CAN</code> или наоборот).<br>
+  <em>Решение:</em> в настройках программы выберите правильный протокол (для <em>E46</em> после 2001 года — <code>CAN</code>).</li>
+
+  <li>🚫 <strong>Программа зависает при чтении ошибок</strong><br>
+  <em>Причина:</em> нестабильное соединение с адаптером или проблемы с блоком <code>ECU</code>.<br>
+  <em>Решение:</em> переподключите адаптер, проверьте питание автомобиля (напряжение должно быть не ниже <code>11.5V</code>).</li>
+</ul>
+
+<p>Если ни один из способов не помог, попробуйте:</p>
+<ol>
+  <li>Запустить программу в режиме совместимости с <em>Windows XP</em>.</li>
+  <li>Отключить антивирус (иногда он блокирует доступ к <code>COM-порту</code>).</li>
+  <li>Попробовать другой адаптер.</li>
+</ol>
+
+<details class="faq-item"><summary>Что делать, если BMW Scanner показывает неверные данные?</summary><div class="faq-answer"><p>
+<p>1. Проверьте, правильно ли подключён адаптер (контакты 7 и 15 в разъёме OBD-II должны быть заняты).</p>
+<p>2. Убедитесь, что зажигание включено (но двигатель не заведён).</p>
+<p>3. Попробуйте обновить прошивку адаптера (для <code>FTDI</code>-чипов).</p>
+<p>4. Если проблема остаётся, сравните показания с другой программой (например, <em>INPA</em>).</p></div></details></p>
+
+<h2 id="faq-ответы-на-частые-вопросы">FAQ: ответы на частые вопросы</h2>
+
+<details>
+  <summary>❓ Можно ли использовать BMW Scanner 1.4.0 на Windows 10 или 11?</summary>
+  <p>Да, но могут потребоваться дополнительные настройки:</p>
+  <ol>
+    <li>Запускайте программу в режиме совместимости с <em>Windows XP SP3</em>.</li>
+    <li>Отключите контроль учётных записей (<code>UAC</code>).</li>
+    <li>Установите драйверы для адаптера вручную (автоустановка может не сработать).</li>
+  </ol>
+  <p>На <em>Windows 11</em> также может потребоваться отключить защиту <code>Core Isolation</code> в настройках безопасности.</p>
+</details>
+
+<details>
+  <summary>❓ Какой адаптер лучше купить для E46 2003 года?</summary>
+  <p>Для <em>E46</em> 2003 года выпуска (с шиной <code>CAN</code>) оптимальный выбор — адаптер <strong>USB K+DCAN</strong> от <em>OneStopElectronics</em>. Он поддерживает оба протокола и совместим с <em>BMW Scanner 1.4.0</em>, <em>INPA</em> и <em>ISTA-D</em>.</p>
+  <p>Альтернатива — адаптер на базе <code>FT232RL</code> с ручной прошивкой, но он требует дополнительной настройки.</p>
+</details>
+
+<details>
+  <summary>❓ Можно ли с помощью BMW Scanner 1.4.0 сбросить сервисный интервал?</summary>
+  <p>Да, но только для некоторых моделей. Для сброса сервисного интервала:</p>
+  <ol>
+    <li>Подключитесь к блоку <code>IKE</code> (приборная панель).</li>
+    <li>Выберите функцию <code>Service Reset</code> или <code>Reset SI</code>.</li>
+    <li>Подтвердите сброс (может потребоваться ввод кода, например, <code>12345</code>).</li>
+  </ol>
+  <p>На некоторых автомобилях (например, <em>E60</em>) для этой операции требуется <em>NCS Expert</em>.</p>
+</details>
+
+<details>
+  <summary>❓ Почему программа показывает ошибки на русском языке с кракозябрами?</summary>
+  <p>Это проблема кодировки шрифтов в старой версии программы. Чтобы исправить:</p>
+  <ol>
+    <li>Зайдите в папку с программой и найдите файл <code>BMWScanner.ini</code>.</li>
+    <li>Добавьте строку <code>Font=Lucida Console</code>.</li>
+    <li>Измените кодировку системы на <code>Windows-1251</code> (для русского языка).</li>
+  </ol>
+  <p>Если это не поможет, скачайте патч для русификации с форума <em>Bimmerforums</em>.</p>
+</details>
+
+<details>
+  <summary>❓ Можно ли с помощью BMW Scanner 1.4.0 прошить блок управления?</summary>
+  <p>Нет, <em>BMW Scanner 1.4.0</em> не предназначен для прошивки блоков <code>ECU</code>. Для этого требуются специализированные инструменты:</p>
+  <ul>
+    <li><em>WinKFP</em> — для прошивки блоков <code>DME</code>, <code>EGS</code>.</li>
+    <li><em>ISTA-P</em> — для программирования новых модулей.</li>
+    <li><em>NCS Expert</em> — для изменения конфигурации блоков.</li>
+  </ul>
+  <p>Неправильная прошивка может вывести блок из строя! Если вам нужно обновить ПО, обратитесь к специалистам.</p>
+</details></div>
+                    <!--#include virtual="/ssi/article_after.html" -->
+
+                </article>
+                <aside class="article-sidebar"><!--#include virtual="/ssi/sidebar_top.html" --><nav class="sidebar-search"><div class="sidebar-search-box"><input type="text" id="globalSearchInput" placeholder="🔍 Поиск статей..." autocomplete="off"><div class="search-dropdown" id="globalSearchDropdown"></div></div></nav><!--#include virtual="/ssi/sidebar_before_toc.html" --><nav class="sidebar-toc" id="sidebarToc"><h3>Содержание</h3><ul><li><a href="#что-такое-bmw-scanner-140-и-для-каких-моделей-он-подходит">Что такое BMW Scanner 1.4.0 и для каких моделей он подходит</a></li><li><a href="#где-скачать-bmw-scanner-140-проверенные-источники">Где скачать BMW Scanner 1.4.0: проверенные источники</a></li><li><a href="#какой-адаптер-нужен-для-работы-с-bmw-scanner-140">Какой адаптер нужен для работы с BMW Scanner 1.4.0</a></li><li><a href="#установка-и-настройка-bmw-scanner-140-пошаговая-инструкция">Установка и настройка BMW Scanner 1.4.0: пошаговая инструкция</a></li><li><a href="#расшифровка-ошибок-и-диагностика-с-bmw-scanner-140">Расшифровка ошибок и диагностика с BMW Scanner 1.4.0</a></li><li><a href="#скрытые-функции-и-тюнинг-с-помощью-bmw-scanner-140">Скрытые функции и тюнинг с помощью BMW Scanner 1.4.0</a></li><li><a href="#альтернативы-bmw-scanner-140-когда-стоит-выбрать-другое-по">Альтернативы BMW Scanner 1.4.0: когда стоит выбрать другое ПО</a></li><li><a href="#частые-проблемы-и-их-решения">Частые проблемы и их решения</a></li><li><a href="#faq-ответы-на-частые-вопросы">FAQ: ответы на частые вопросы</a></li></ul></nav><!--#include virtual="/ssi/sidebar_before_related.html" --><nav class="sidebar-related"><h3>Похожие статьи</h3><ul><li><a href="/articles/b/bm/bmw-3-series-1998.html" class="related-card">BMW 3 Series E46 (1998) — обзор, характеристики и секреты</a></li><li><a href="/articles/t/ts/tsvet-475-bmv.html" class="related-card">Цвет 475 BMW: расшифровка, особенности и как выбрать правильный оттенок</a></li><li><a href="/articles/l/lu/luchshaya-bmv-dlya-drifta.html" class="related-card">Лучшая BMW для дрифта: ТОП-5 моделей и советы по тюнингу</a></li><li><a href="/articles/z/za/zamena-perednego-stupichnogo-podshipnika-bmv-e46.html" class="related-card">Замена переднего ступичного подшипника BMW E46: Инструкция</a></li><li><a href="/articles/b/bm/bmv-3-46.html" class="related-card">BMW 3.46: Миф или реальность? Разбор характеристик и кодов</a></li></ul></nav><!--#include virtual="/ssi/sidebar_after_related.html" --></aside>
+            </div>
+        </div>
+    </main>
+
+    <!--#include virtual="/ssi/before_related_bottom.html" -->
+    <section class="related-bottom">
+        <div class="container">
+            <h2 class="related-bottom-heading">📖 Читайте также</h2>
+            <div class="related-bottom-grid"><a href="/articles/b/bm/bmw-3-series-1998.html" class="related-bottom-card"><span class="related-bottom-title">BMW 3 Series E46 (1998) — обзор, характеристики и секреты</span><span class="related-bottom-desc">Подробный разбор BMW 3 Series 1998 года (E46): технические данные, слабые места, тюнинг и советы по </span></a><a href="/articles/t/ts/tsvet-475-bmv.html" class="related-bottom-card"><span class="related-bottom-title">Цвет 475 BMW: расшифровка, особенности и как выбрать правильный оттенок</span><span class="related-bottom-desc">Что означает код цвета 475 у BMW? Подробный гайд по оттенку Arctic Blue Metallic: история, особеннос</span></a><a href="/articles/l/lu/luchshaya-bmv-dlya-drifta.html" class="related-bottom-card"><span class="related-bottom-title">Лучшая BMW для дрифта: ТОП-5 моделей и советы по тюнингу</span><span class="related-bottom-desc">Какую BMW выбрать для дрифта? Сравнение E36, E46, E92 и других легендарных моделей по цене, мощности</span></a><a href="/articles/z/za/zamena-perednego-stupichnogo-podshipnika-bmv-e46.html" class="related-bottom-card"><span class="related-bottom-title">Замена переднего ступичного подшипника BMW E46: Инструкция</span><span class="related-bottom-desc">Полное руководство по замене переднего ступичного подшипника на BMW E46. Симптомы, выбор детали, пош</span></a><a href="/articles/b/bm/bmv-3-46.html" class="related-bottom-card"><span class="related-bottom-title">BMW 3.46: Миф или реальность? Разбор характеристик и кодов</span><span class="related-bottom-desc">Все о BMW 3.46: технические особенности, коды ошибок, расход топлива и отличия от аналогов. Экспертн</span></a><a href="/articles/a/an/angelskie-glazki-bmv-e46.html" class="related-bottom-card"><span class="related-bottom-title">Ангельские глазки BMW E46: выбор, установка и настройка своими руками</span><span class="related-bottom-desc">Полный гид по ангельским глазкам на BMW E46. Сравнение CCFL и LED, пошаговая установка, регулировка </span></a></div>
+        </div>
+    </section>
+    <!--#include virtual="/ssi/after_related_bottom.html" -->
+
+    <footer class="site-footer-premium">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">🚗 BMW wiki</div>
+                    <p class="footer-about">Гид по обслуживанию, ремонту и тюнингу BMW — от классики до современных моделей.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Разделы</h4>
+                    <ul><li><a href="/category/e39/">📁 E39</a></li>
+<li><a href="/category/m5/">📁 M5</a></li>
+<li><a href="/category/e60/">📁 E60</a></li>
+<li><a href="/category/x5/">📁 X5</a></li>
+<li><a href="/category/e34/">📁 E34</a></li>
+<li><a href="/category/f30/">📁 F30</a></li></ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Информация</h4>
+                    <ul>
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="/about.html">О проекте</a></li>
+                        <li><a href="/categories.html">Все разделы</a></li>
+                        <li><a href="/contact.html">Контакты</a></li>
+                        <li><a href="/privacy.html">Конфиденциальность</a></li>
+                        <li><a href="/sitemap.xml">Карта сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 BMW wiki. Все права защищены.</p>
+                <!--LiveInternet counter--><div style="margin-top:10px;"><a href="https://www.liveinternet.ru/click"
+                target="_blank"><img id="licnt06C4" width="88" height="15" style="border:0" 
+                title="LiveInternet: показано число посетителей за сегодня"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+                alt=""/></a><script>(function(d,s){d.getElementById("licnt06C4").src=
+                "https://counter.yadro.ru/hit?t26.5;r"+escape(d.referrer)+
+                ((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+                (s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+                ";h"+escape(d.title.substring(0,150))+";"+Math.random()})(document,screen)</script></div><!--/LiveInternet-->
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-consent" class="cookie-popup">
+        <div class="cookie-inner">
+            <span>🍪 Мы используем файлы cookie для улучшения работы сайта.</span>
+            <button id="cookie-accept" class="cookie-btn">Принять</button>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+    <script>
+    (function() {
+        const popup = document.getElementById('cookie-consent');
+        const btn = document.getElementById('cookie-accept');
+        if (popup && btn && !localStorage.getItem('cookie-accepted')) {
+            popup.classList.add('visible');
+            btn.onclick = () => {
+                localStorage.setItem('cookie-accepted', 'true');
+                popup.classList.remove('visible');
+            };
+        }
+    })();
+    </script>
+    <!--#include virtual="/ssi/body_bottom.html" -->
+    <script src="/static/js/inject.js" defer></script>
+</body>
+</html>
